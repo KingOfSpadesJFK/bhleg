@@ -11,6 +11,9 @@ const FLASH_SAMPLES = 100
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+# The static body to draw over
+@export var static_body: StaticBody2D
+
 var _do_flash: bool = false
 var _flash_angle: float
 var _flash_markers: Node
@@ -63,6 +66,7 @@ func _flash_light():
 		# Raycast
 		var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
 		var query = PhysicsRayQueryParameters2D.create(global_position, dir * FLASH_RAY_LENGTH)
+		query.collision_mask = 1					# For now, just check for bodies on layer 1
 		var result = space_state.intersect_ray(query)
 		
 		# Process the result
@@ -82,8 +86,13 @@ func _flash_light():
 		angle += step
 
 	# Finalize new polygon
+	var col_poly: CollisionPolygon2D = static_body.get_node("CollisionPolygon2D") as CollisionPolygon2D
+	if col_poly:
+		var ex = Geometry2D.clip_polygons(col_poly.polygon, PackedVector2Array(verts))
+		col_poly.polygon = ex[0]
+	
 	var flash_poly: Polygon2D = Polygon2D.new()
-	flash_poly.color = Color(1,0,0,1)
+	# flash_poly.color = Color(1,0,0,1)
 	flash_poly.polygon = PackedVector2Array(verts)
 	add_sibling(flash_poly)
 	_do_flash = false
