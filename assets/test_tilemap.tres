@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://ci3qj5omh1mx3"]
+[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://ci3qj5omh1mx3"]
 
 [ext_resource type="Texture2D" uid="uid://csf1nfg4bp5k0" path="res://assets/test-tilemap.png" id="1_sgbvh"]
 
@@ -127,11 +127,7 @@ texture = ExtResource("1_sgbvh")
 3:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:4/0/physics_layer_0/angular_velocity = 0.0
 
-[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_0pyuu"]
-resource_name = "blocks"
-
 [resource]
 physics_layer_0/collision_layer = 1
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_608kk")
 sources/0 = SubResource("TileSetAtlasSource_cvl74")
-sources/1 = SubResource("TileSetScenesCollectionSource_0pyuu")
