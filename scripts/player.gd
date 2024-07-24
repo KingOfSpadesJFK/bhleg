@@ -19,6 +19,8 @@ var _flash_angle: float
 var _flash_markers: Node
 @onready var _camera: Camera2D = $Camera2D
 
+signal flash(red_count: int, cyan_count: int)
+
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -96,6 +98,7 @@ func _flash_light():
 	flash_poly.polygon = PackedVector2Array(verts)
 	add_sibling(flash_poly)
 	_do_flash = false
+	flash.emit(1, 1)
 
 
 func _input(event):
