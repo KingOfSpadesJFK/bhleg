@@ -24,3 +24,14 @@ func add_polygon(verts: PackedVector2Array) -> void:
 			c.build_mode = CollisionPolygon2D.BuildMode.BUILD_SEGMENTS
 			c.polygon = arr.duplicate()			# Since arr will go bye-bye after the thread
 			add_child(c)
+
+			# DEBUG PURPOSES
+			# var flash_poly: Polygon2D = Polygon2D.new()
+			# randomize()
+			# flash_poly.color = Color(_rand(), _rand(), _rand(), 1)
+			# flash_poly.polygon = arr.duplicate()
+			# add_child(flash_poly)
+
+
+func _rand():
+	return 0.75 + randf() * 0.25

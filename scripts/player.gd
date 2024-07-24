@@ -6,7 +6,7 @@ const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 const FLASH_RAY_LENGTH = 1000.0
 const FLASH_SPREAD = 90.0			# How wide the area of flash should be (in degrees)
-const FLASH_SAMPLES = 100
+const FLASH_SAMPLES = 50
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -54,40 +54,66 @@ func _flash_light():
 
 	# Initialize the new polygon
 	var verts: Array[Vector2] = []
-	verts.append(global_position)
 
 	# Initialize the raycasting
 	var space_state = get_world_2d().direct_space_state
 	var step: float = deg_to_rad(FLASH_SPREAD / FLASH_SAMPLES)
 	var angle: float = deg_to_rad(_flash_angle - FLASH_SPREAD / 2.0)
 
+	# Initial starting ray cast
+	var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
+	var query = PhysicsRayQueryParameters2D.create(global_position, dir * FLASH_RAY_LENGTH)
+	query.collision_mask = 4
+	var shad_result = space_state.intersect_ray(query)
+	if shad_result:
+		verts.append(shad_result.position)
+	else:
+		verts.append(global_position)
+
 	# Raycast the samples
+	var prev_pos = verts[0]
+	var prev_dir = Vector2(0,0)
 	for i in range(FLASH_SAMPLES):
 		# Raycast
-		var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
-		var query = PhysicsRayQueryParameters2D.create(global_position, dir * FLASH_RAY_LENGTH)
-		query.collision_mask = 1					# For now, just check for bodies on layer 1
-		var result = space_state.intersect_ray(query)
+		dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
+		query.to = dir * FLASH_RAY_LENGTH
+		query.collision_mask = 1					# This first ray query will check for layer 1 (the environment)
+		var env_result = space_state.intersect_ray(query)
 		
 		# Process the result
-		if result:
+		if env_result:
 			# Append to the polygon
-			verts.append(result.position)
+			var d = (env_result.position - prev_pos).normalized()
+			if !d.is_equal_approx(prev_dir):
+				verts.append(env_result.position)
 
-			# Create the debug marker
-			# var sp = Sprite2D.new()
-			# var t = PlaceholderTexture2D.new()
-			# t.size = Vector2(5,5)
-			# sp.texture = t
-			# sp.position = result.position
-			# _flash_markers.add_child(sp)
+				# Create the debug marker
+				var sp = Sprite2D.new()
+				var t = PlaceholderTexture2D.new()
+				t.size = Vector2(5,5)
+				sp.texture = t
+				sp.position = env_result.position
+				_flash_markers.add_child(sp)
+			
+			prev_dir = d
 
 		# Add the step
 		angle += step
 
+	# Final ray cast for starting ray
+	query.collision_mask = 4
+	shad_result = space_state.intersect_ray(query)
+	if shad_result:
+		verts.append(shad_result.position)
+	else:
+		verts.append(global_position)
+
 	# Finalize new polygon
 	shadow_body.add_polygon(PackedVector2Array(verts))
 	
+	# Create the polygon visual
+	verts[0] = global_position
+	verts[verts.size()-1] = global_position
 	var flash_poly: Polygon2D = Polygon2D.new()
 	# flash_poly.color = Color(1,0,0,1)
 	flash_poly.polygon = PackedVector2Array(verts)
