@@ -12,7 +12,7 @@ const FLASH_SAMPLES = 100
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # The static body to draw over
-@export var static_body: StaticBody2D
+@export var shadow_body: ShadowBody
 
 var _do_flash: bool = false
 var _flash_angle: float
@@ -86,10 +86,7 @@ func _flash_light():
 		angle += step
 
 	# Finalize new polygon
-	var col_poly: CollisionPolygon2D = static_body.get_node("CollisionPolygon2D") as CollisionPolygon2D
-	if col_poly:
-		var ex = Geometry2D.clip_polygons(col_poly.polygon, PackedVector2Array(verts))
-		col_poly.polygon = ex[0]
+	shadow_body.add_polygon(PackedVector2Array(verts))
 	
 	var flash_poly: Polygon2D = Polygon2D.new()
 	# flash_poly.color = Color(1,0,0,1)
