@@ -56,8 +56,3 @@ anchors_preset = 0
 script = ExtResource("4_rms5m")
 red_cells = 10
 cyan_cells = 10
-
-[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/HUD/CellContainer"]
-layout_mode = 1
-offset_right = 40.0
-offset_bottom = 40.0
