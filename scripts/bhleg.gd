@@ -5,6 +5,9 @@ func minv(curvec,newvec): return Vector2(min(curvec.x,newvec.x),min(curvec.y,new
 func maxv(curvec,newvec): return Vector2(max(curvec.x,newvec.x),max(curvec.y,newvec.y))
 
 
+### Calculates the bounding box of a polygon
+#	polygon: The packed array of verticies making the polygon
+#	Returns a Rect2 containing the polygon's boundaries
 func calculate_bounding_box(polygon: PackedVector2Array) -> Rect2:
 	var min_vec = Vector2(pow(2,31)-1,pow(2,31)-1)
 	var max_vec = Vector2(-pow(2,31),-pow(2,31))

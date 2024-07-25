@@ -102,7 +102,6 @@ func _flash_light():
 	var prev_dir = atan2(v.y, v.x)
 	
 	# Raycast the samples
-	var next_dir = 0.0
 	angle += step
 	for i in range(FLASH_SAMPLES-1):
 		# Raycast
@@ -115,10 +114,8 @@ func _flash_light():
 		if env_result:
 			# Check if the points are lined in the same direction
 			var _v = (env_result.position - mid_pos).normalized()
-			next_dir = atan2(_v.y, _v.x)
-			if next_dir < 0.0:
-				next_dir += 2.0 * PI
-			if next_dir - prev_dir >= PI / 80.0 || next_dir - prev_dir <= -PI / 80.0:
+			var next_dir = atan2(_v.y, _v.x)
+			if next_dir - prev_dir >= PI / 120.0 || next_dir - prev_dir <= -PI / 120.0:
 				# Append to the polygon
 				verts.append(mid_pos)
 
@@ -137,24 +134,11 @@ func _flash_light():
 		# Add the step
 		angle += step
 
-	# Calculate the bounding box fo the newly created polygon
-	var min_vec = Vector2(pow(2,31)-1,pow(2,31)-1)
-	var max_vec = Vector2(-pow(2,31)-1,-pow(2,31)-1)
-	verts.append(global_position)
-	for _v in verts:
-		min_vec = Bhleg.minv(min_vec, _v)
-		max_vec = Bhleg.maxv(max_vec, _v)
-
 	# Finalize new polygon
-	shadow_body.add_polygon(PackedVector2Array(verts), Rect2(min_vec,max_vec-min_vec))
+	verts.append(mid_pos)
+	verts.append(global_position)
+	shadow_body.add_polygon(PackedVector2Array(verts), Bhleg.calculate_bounding_box(PackedVector2Array(verts)))
 	print("Vert count: " + str(verts.size()))
-	
-	# Create the polygon visual
-	if !verts.is_empty():
-		var flash_poly: Polygon2D = Polygon2D.new()
-		# flash_poly.color = Color(1,0,0,1)
-		flash_poly.polygon = PackedVector2Array(verts)
-		add_sibling(flash_poly)
 	
 	_do_flash = FlashType.NONE
 	
