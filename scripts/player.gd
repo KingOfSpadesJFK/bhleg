@@ -68,6 +68,11 @@ func _physics_process(delta):
 
 
 func _flash_light():
+	var minv = func (curvec,newvec):
+		return Vector2(min(curvec.x,newvec.x),min(curvec.y,newvec.y))
+	var maxv = func (curvec,newvec):
+		return Vector2(max(curvec.x,newvec.x),max(curvec.y,newvec.y))
+
 	# Debugging markers
 	if _flash_markers:
 		_flash_markers.queue_free()
@@ -95,6 +100,12 @@ func _flash_light():
 	var prev_pos = verts[0]
 	var v = (env_result.position - prev_pos).normalized()
 	var prev_dir = atan2(v.y, v.x)
+
+	# Init the min/max vectors for the bounding box
+	var min_vec = Vector2(pow(2,31)-1,pow(2,31)-1)
+	var max_vec = Vector2(-pow(2,31)-1,-pow(2,31)-1)
+	min_vec = minv.call(min_vec, global_position)
+	max_vec = maxv.call(max_vec, global_position)
 	
 	# Raycast the samples
 	var next_dir = 0.0
@@ -116,6 +127,8 @@ func _flash_light():
 			if next_dir - prev_dir >= PI / 80.0 || next_dir - prev_dir <= -PI / 80.0:
 				# Append to the polygon
 				verts.append(mid_pos)
+				min_vec = minv.call(min_vec, mid_pos)
+				max_vec = maxv.call(max_vec, mid_pos)
 
 				# Create the debug marker
 				#var sp = Sprite2D.new()
@@ -134,7 +147,7 @@ func _flash_light():
 
 	# Finalize new polygon
 	verts.append(global_position)
-	shadow_body.add_polygon(PackedVector2Array(verts))
+	shadow_body.add_polygon(PackedVector2Array(verts), Rect2(min_vec,max_vec-min_vec))
 	print("Vert count: " + str(verts.size()))
 	
 	# Create the polygon visual
