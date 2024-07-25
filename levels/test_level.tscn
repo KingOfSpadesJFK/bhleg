@@ -39,7 +39,6 @@ collision_mask = 0
 script = ExtResource("3_465bv")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
-visible = false
 build_mode = 1
 polygon = PackedVector2Array(36, 162, 59, 148, 91, 140, 117, 159, 121, 184, 96, 212, 39, 209, 28, 192)
 

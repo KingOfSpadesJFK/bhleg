@@ -6,7 +6,7 @@ const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 const FLASH_RAY_LENGTH = 1000.0
 const FLASH_SPREAD = 90.0			# How wide the area of flash should be (in degrees)
-const FLASH_SAMPLES = 100
+const FLASH_SAMPLES = 200
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -100,12 +100,6 @@ func _flash_light():
 	var prev_pos = verts[0]
 	var v = (env_result.position - prev_pos).normalized()
 	var prev_dir = atan2(v.y, v.x)
-
-	# Init the min/max vectors for the bounding box
-	var min_vec = Vector2(pow(2,31)-1,pow(2,31)-1)
-	var max_vec = Vector2(-pow(2,31)-1,-pow(2,31)-1)
-	min_vec = minv.call(min_vec, global_position)
-	max_vec = maxv.call(max_vec, global_position)
 	
 	# Raycast the samples
 	var next_dir = 0.0
@@ -127,8 +121,6 @@ func _flash_light():
 			if next_dir - prev_dir >= PI / 80.0 || next_dir - prev_dir <= -PI / 80.0:
 				# Append to the polygon
 				verts.append(mid_pos)
-				min_vec = minv.call(min_vec, mid_pos)
-				max_vec = maxv.call(max_vec, mid_pos)
 
 				# Create the debug marker
 				#var sp = Sprite2D.new()
@@ -145,18 +137,25 @@ func _flash_light():
 		# Add the step
 		angle += step
 
-	# Finalize new polygon
+	# Calculate the bounding box fo the newly created polygon
+	var min_vec = Vector2(pow(2,31)-1,pow(2,31)-1)
+	var max_vec = Vector2(-pow(2,31)-1,-pow(2,31)-1)
 	verts.append(global_position)
+	for _v in verts:
+		min_vec = Bhleg.minv(min_vec, _v)
+		max_vec = Bhleg.maxv(max_vec, _v)
+
+	# Finalize new polygon
 	shadow_body.add_polygon(PackedVector2Array(verts), Rect2(min_vec,max_vec-min_vec))
 	print("Vert count: " + str(verts.size()))
 	
 	# Create the polygon visual
-	verts[0] = global_position
-	verts[verts.size()-1] = global_position
-	var flash_poly: Polygon2D = Polygon2D.new()
-	# flash_poly.color = Color(1,0,0,1)
-	flash_poly.polygon = PackedVector2Array(verts)
-	add_sibling(flash_poly)
+	if !verts.is_empty():
+		var flash_poly: Polygon2D = Polygon2D.new()
+		# flash_poly.color = Color(1,0,0,1)
+		flash_poly.polygon = PackedVector2Array(verts)
+		add_sibling(flash_poly)
+	
 	_do_flash = FlashType.NONE
 	
 
