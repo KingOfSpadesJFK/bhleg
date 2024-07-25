@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bb8l5k2fjvhes"]
+[gd_scene load_steps=5 format=3 uid="uid://bb8l5k2fjvhes"]
 
 [ext_resource type="PackedScene" uid="uid://cy4oa4aji2qxu" path="res://scenes/player.tscn" id="2_butpl"]
 [ext_resource type="TileSet" uid="uid://du3n7xwnm051j" path="res://assets/tileset.tres" id="3_ki0li"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_oirbf"]
+[ext_resource type="Script" path="res://scripts/cell_container.gd" id="4_rms5m"]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -34,4 +36,28 @@ collision_layer = 4
 collision_mask = 0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+visible = false
 polygon = PackedVector2Array(46, 218, 40, 210, 28, 191, 33, 162, 58, 149, 91, 140, 117, 160, 122, 186, 101, 208, 77, 220, 53, 220, 53, 325, 740, 333, 731, -255, -198, -145, -156, 358, 46, 325)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("player")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_oirbf")
+player = NodePath("../../Player")
+
+[node name="CellContainer" type="Control" parent="CanvasLayer/HUD"]
+anchors_preset = 0
+script = ExtResource("4_rms5m")
+red_cells = 10
+cyan_cells = 10
+
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/HUD/CellContainer"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0

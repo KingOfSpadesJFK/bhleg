@@ -24,6 +24,8 @@ var _flash_markers: Node
 var _beam_charge: float
 @onready var _camera: Camera2D = $Camera2D
 
+signal flash(red_count: int, cyan_count: int)
+
 enum FlashType {
 	NONE,
 	WHITE,
@@ -115,7 +117,9 @@ func _flash_light():
 	# flash_poly.color = Color(1,0,0,1)
 	flash_poly.polygon = PackedVector2Array(verts)
 	add_sibling(flash_poly)
+	flash.emit(1, 1)
 	_do_flash = FlashType.NONE
+	
 
 func _has_enough_for_white() -> bool: return red_cells >= 1 && cyan_cells >= 1
 func _has_enough_for_red() -> bool: return red_cells >= 1
