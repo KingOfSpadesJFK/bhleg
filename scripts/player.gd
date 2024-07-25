@@ -137,8 +137,9 @@ func _input(event):
 			match flash_type:
 				FlashType.WHITE:
 					if _has_enough_for_white():
-						red_cells -= 1
-						cyan_cells -= 1
+						#red_cells -= 1
+						#cyan_cells -= 1
+						flash.emit(1, 1)
 						return FlashType.WHITE
 				FlashType.RED:
 					if _has_enough_for_red():
@@ -180,8 +181,7 @@ func _calculate_flash_direction(mouse_pos: Vector2):
 		result = 0.0
 	else:
 		result = rad_to_deg(atan2(n.y, n.x))
-		var q: float = round(result / 45.0)
-		q *= 45.0
+		var q: float = snapped(result, 45.0)
 		result = q
 		
 	return result
