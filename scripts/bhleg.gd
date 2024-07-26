@@ -61,3 +61,26 @@ func change_scene(scene: String, args: Dictionary = {}):
 #	args: A dictionary of arguments to pass down
 func reload_scene(args: Dictionary = {}):
 	change_scene(current_scene, args)
+
+### Converts a shape to a polygon
+#	samples: For circles
+#	offset: Value to offset each vertex
+#   Returns a dictionary containing the PackedVector2Array 'polygon' and the bounding box 'extent'
+func convert_shape_to_polygon(shape: Shape2D, samples: int = 20, offset: Vector2 = Vector2.ZERO) -> Dictionary:
+	var verts: Array[Vector2] = []
+	var extent: Rect2 = Rect2()
+	if shape is CircleShape2D:
+		# Convert the circle into a polygon
+		var r: float = (shape as CircleShape2D).radius
+		var rad: float = 0
+		var step: float = 2 * PI / float(samples)
+		
+		for i in range(samples):
+			verts.append(Vector2(cos(rad), sin(rad)) * r + offset)
+			rad += step
+
+		extent.position = offset - Vector2(r,r)
+		extent.size = Vector2(r,r) * 2.0
+
+	# Return the polygon
+	return { "polygon": PackedVector2Array(verts), "extent": extent }

@@ -133,7 +133,7 @@ func _flash_light():
 	# Finalize new polygon
 	verts.append(mid_pos)
 	verts.append(start_pos)
-	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts), Vector2(64,64))
+	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts))
 	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
 		shadow_body.add_polygon(PackedVector2Array(verts), extent)
 
