@@ -5,10 +5,33 @@
 [sub_resource type="SphereMesh" id="SphereMesh_ful5p"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hw20r"]
-radius = 6.0
+radius = 8.0
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_j74i2")
+
+[node name="FlashAnchor" type="Node2D" parent="."]
+
+[node name="FlashHead" type="Marker2D" parent="FlashAnchor"]
+
+[node name="Line2D" type="Line2D" parent="FlashAnchor/FlashHead"]
+rotation = 0.785398
+scale = Vector2(1, 1)
+points = PackedVector2Array(0, 0, 41, 0)
+width = 1.5
+default_color = Color(0.315749, 0.378573, 0.580516, 1)
+
+[node name="Line2D2" type="Line2D" parent="FlashAnchor/FlashHead"]
+points = PackedVector2Array(0, 0, 41, 0)
+width = 1.0
+default_color = Color(0.315749, 0.378573, 0.580516, 1)
+
+[node name="Line2D3" type="Line2D" parent="FlashAnchor/FlashHead"]
+rotation = -0.785398
+scale = Vector2(1, 1)
+points = PackedVector2Array(0, 0, 41, 0)
+width = 1.5
+default_color = Color(0.315749, 0.378573, 0.580516, 1)
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="."]
 modulate = Color(0, 0, 0, 1)
