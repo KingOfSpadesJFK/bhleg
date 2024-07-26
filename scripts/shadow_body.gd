@@ -24,8 +24,35 @@ func _enter_tree():
 
 			# Create the visual for the poly
 			var poly: Polygon2D = Polygon2D.new()
-			poly.polygon = c.polygon
+			poly.polygon = c.polygon.duplicate()
 			_visual_poly.add_child(poly)
+		
+		if c is CollisionShape2D:
+			if c.shape is CircleShape2D:
+				c.queue_free()
+
+				var verts: Array[Vector2] = []
+				var r: float = (c.shape as CircleShape2D).radius
+				var rad: float = 0
+				
+				while rad < PI * 2.0:
+					verts.append(Vector2(cos(rad), sin(rad)) * r + c.global_position)
+					rad += PI / 10.0
+
+				var col: CollisionPolygon2D = CollisionPolygon2D.new()
+				col.build_mode = CollisionPolygon2D.BUILD_SEGMENTS
+				col.polygon = PackedVector2Array(verts)
+				add_child(col)
+
+				var extent: Rect2 = Rect2(c.global_position, Vector2(r,r))
+				extent.position = c.global_position
+				extent.size = Vector2(r, r)
+				col.set_meta(META_SHADOW_EXTENT, extent)
+				col.set_meta(META_SHADOW_HOLE, false)
+
+				var poly: Polygon2D = Polygon2D.new()
+				poly.polygon = PackedVector2Array(verts)
+				_visual_poly.add_child(poly)
 
 	add_child(_visual_poly)
 
