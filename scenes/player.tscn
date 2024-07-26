@@ -1,17 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://cy4oa4aji2qxu"]
+[gd_scene load_steps=7 format=3 uid="uid://cy4oa4aji2qxu"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_j74i2"]
 [ext_resource type="Script" path="res://scripts/hitbox.gd" id="2_wedjy"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_ful5p"]
 
+[sub_resource type="SeparationRayShape2D" id="SeparationRayShape2D_516dp"]
+length = 8.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_hw20r"]
-radius = 7.0
+radius = 5.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eagm6"]
 radius = 9.0
 
 [node name="Player" type="CharacterBody2D"]
+floor_snap_length = 5.0
 script = ExtResource("1_j74i2")
 
 [node name="FlashAnchor" type="Node2D" parent="."]
@@ -44,6 +48,13 @@ modulate = Color(0, 0, 0, 1)
 position = Vector2(0, 4.51671e-06)
 scale = Vector2(18.0204, 18)
 mesh = SubResource("SphereMesh_ful5p")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource("SeparationRayShape2D_516dp")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+rotation = 3.14159
+shape = SubResource("SeparationRayShape2D_516dp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hw20r")

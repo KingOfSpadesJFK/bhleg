@@ -3,7 +3,7 @@ class_name Player
 
 
 const SPEED = 150.0
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = -350.0
 const FLASH_RAY_LENGTH = 1000.0
 const FLASH_SPREAD = 90.0			# How wide the area of flash should be (in degrees)
 const FLASH_SAMPLES = 200

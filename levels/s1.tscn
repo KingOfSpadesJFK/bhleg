@@ -26,7 +26,6 @@ z_index = 1
 position = Vector2(71, 179)
 collision_layer = 2
 collision_mask = 5
-floor_snap_length = 10.0
 shadow_body = NodePath("../StaticBody2D")
 red_cells = 3
 cyan_cells = 3
