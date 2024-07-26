@@ -34,26 +34,20 @@ func _enter_tree():
 				c.queue_free()
 
 				# Convert the circle into a polygon
-				var verts: Array[Vector2] = []
-				var r: float = (c.shape as CircleShape2D).radius
-				var rad: float = 0
-				
-				while rad < PI * 2.0:
-					verts.append(Vector2(cos(rad), sin(rad)) * r + c.global_position)
-					rad += PI / 10.0
+				var shape_poly: Dictionary = Bhleg.convert_shape_to_polygon(c.shape, 20,  c.global_position)
 
 				# Create the new polygon
 				var col: CollisionPolygon2D = CollisionPolygon2D.new()
 				col.build_mode = CollisionPolygon2D.BUILD_SEGMENTS
-				col.polygon = PackedVector2Array(verts)
+				col.polygon = shape_poly.polygon
 				add_child(col)
 
-				var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts), Vector2(50,50))
+				var extent = shape_poly.extent
 				col.set_meta(META_SHADOW_EXTENT, extent)
 				col.set_meta(META_SHADOW_HOLE, false)
 
 				var poly: Polygon2D = Polygon2D.new()
-				poly.polygon = PackedVector2Array(verts)
+				poly.polygon = shape_poly.polygon
 				_visual_poly.add_child(poly)
 				col.set_meta(META_SHADOW_VISUAL, poly)
 
@@ -74,7 +68,7 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 			if c.has_meta(META_SHADOW_EXTENT) && c.has_meta(META_SHADOW_HOLE):
 				# If there is a bounding box, check if input extent intersects the new polygon
 				var box: Rect2 = c.get_meta(META_SHADOW_EXTENT) as Rect2
-				if Geometry2D.intersect_polygons(entry.polygon, verts):
+				if box.intersects(extent):
 					entry.extent = box
 					entry.is_hole = c.get_meta(META_SHADOW_HOLE)
 					poly_queue.append(entry)
@@ -83,18 +77,25 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 
 	# Loop through the poly queue
 	var i: int = 0
-	var main_body
+	var main_body: CollisionPolygon2D = null
 	while i < poly_queue.size():
 		# Run a boolean operation on these polygons
 		var col_poly: PolyStackEntry = poly_queue[i]
 		i += 1
 		var combined: Array[PackedVector2Array]
+		# If the poly is a hole...
+		#  cut the flash from the hole
 		if col_poly.is_hole:
-			combined = Geometry2D.clip_polygons(col_poly.polygon, verts)		# Cut a hole in the holes
-		elif main_body:
-			combined = Geometry2D.merge_polygons(col_poly.polygon, main_body.polygon)
+			combined = Geometry2D.clip_polygons(col_poly.polygon, verts)
+
+		# If the main body is already dealt with... 
+		#  merge the main poly with the current poly
+		elif main_body:		
+			combined = Geometry2D.merge_polygons(col_poly.polygon, main_body.polygon)	# Merge the main body with the col_poly
 			main_body.free()
 			main_body = null
+		
+		# Just merge the flash with the current poly
 		else:
 			combined = Geometry2D.merge_polygons(col_poly.polygon, verts)	
 
