@@ -1,11 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://pwsqdsynruyl"]
+[gd_scene load_steps=8 format=3 uid="uid://pwsqdsynruyl"]
 
 [ext_resource type="Script" path="res://scenes/objects/keyhole.gd" id="1_y0lcp"]
 [ext_resource type="Texture2D" uid="uid://gelb6iwmiqqt" path="res://assets/keyhole_small.png" id="2_n7rca"]
+[ext_resource type="Shader" path="res://shaders/shiny.gdshader" id="2_pno74"]
 [ext_resource type="Texture2D" uid="uid://ov7vtssppitc" path="res://assets/keyhole_big.png" id="3_lks4k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1xuqc"]
 radius = 16.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8qm7l"]
+shader = ExtResource("2_pno74")
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fhqq3"]
 animations = [{
@@ -37,6 +41,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_1xuqc")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_8qm7l")
 sprite_frames = SubResource("SpriteFrames_fhqq3")
 animation = &"closed"
 
