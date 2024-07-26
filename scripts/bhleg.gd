@@ -20,7 +20,7 @@ var add_to_back: bool = true
 @onready var fade_out_options = SceneManager.create_options(fade_out_speed, fade_out_pattern, fade_out_smoothness, fade_out_inverted)
 @onready var fade_in_options = SceneManager.create_options(fade_in_speed, fade_in_pattern, fade_in_smoothness, fade_in_inverted)
 @onready var general_options = SceneManager.create_general_options(color, timeout, clickable, add_to_back)
-var current_scene: String
+@onready var current_scene: String = SceneManager._current_scene
 var _spawn_args: Dictionary
 
 func minv(curvec,newvec): return Vector2(min(curvec.x,newvec.x),min(curvec.y,newvec.y))
@@ -54,3 +54,10 @@ func change_scene(scene: String, args: Dictionary = {}):
 	await SceneManager.fade_in_finished
 	# get_tree().paused = false
 	current_scene = scene
+
+
+### Reloads the current scene.
+### Relies on the SceneManager addon.
+#	args: A dictionary of arguments to pass down
+func reload_scene(args: Dictionary = {}):
+	change_scene(current_scene, args)

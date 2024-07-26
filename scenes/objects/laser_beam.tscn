@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bwdpxlkdq6g65"]
+
+[ext_resource type="Script" path="res://scenes/objects/laser_beam.gd" id="1_5ek2q"]
+[ext_resource type="Script" path="res://scripts/hurtbox.gd" id="1_cmlnt"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_yy3s3"]
+a = Vector2(3.76463e-05, 6)
+b = Vector2(0.00015686, 25)
+
+[sub_resource type="Gradient" id="Gradient_eru4r"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="LaserBeam" type="Node2D"]
+script = ExtResource("1_5ek2q")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 10
+script = ExtResource("1_cmlnt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+rotation = -1.57079
+shape = SubResource("SegmentShape2D_yy3s3")
+
+[node name="Line2D" type="Line2D" parent="."]
+rotation = -0.0188092
+points = PackedVector2Array(23.9958, 0.451395, 0, 0)
+width = 2.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+lifetime = 0.15
+gravity = Vector2(0, 0)
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color = Color(0, 0.788235, 1, 1)
+color_ramp = SubResource("Gradient_eru4r")

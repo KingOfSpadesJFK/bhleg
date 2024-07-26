@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bb8l5k2fjvhes"]
+[gd_scene load_steps=8 format=3 uid="uid://bb8l5k2fjvhes"]
 
 [ext_resource type="PackedScene" uid="uid://cy4oa4aji2qxu" path="res://scenes/player.tscn" id="2_butpl"]
 [ext_resource type="Script" path="res://scripts/shadow_body.gd" id="3_465bv"]
 [ext_resource type="TileSet" uid="uid://du3n7xwnm051j" path="res://assets/tileset.tres" id="3_ki0li"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_oirbf"]
 [ext_resource type="Script" path="res://scripts/cell_container.gd" id="4_rms5m"]
+[ext_resource type="PackedScene" uid="uid://bwdpxlkdq6g65" path="res://scenes/objects/laser_beam.tscn" id="6_e0d4d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j7rlh"]
 radius = 42.0
@@ -72,3 +73,5 @@ grow_horizontal = 2
 script = ExtResource("4_rms5m")
 red_cells = 10
 cyan_cells = 10
+
+[node name="LaserBeam" parent="." instance=ExtResource("6_e0d4d")]

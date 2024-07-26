@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 
-const SPEED = 200.0
+const SPEED = 150.0
 const JUMP_VELOCITY = -400.0
 const FLASH_RAY_LENGTH = 1000.0
 const FLASH_SPREAD = 90.0			# How wide the area of flash should be (in degrees)
@@ -218,3 +218,8 @@ func _calculate_flash_direction(mouse_pos: Vector2):
 		
 	return result
 
+
+
+func _on_hit_box_hit():
+	queue_free()
+	pass # Replace with function body.
