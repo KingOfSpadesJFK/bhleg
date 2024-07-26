@@ -1,0 +1,156 @@
+[gd_scene load_steps=14 format=3 uid="uid://ckcyg1axbshy1"]
+
+[ext_resource type="Script" path="res://scenes/objects/key.gd" id="1_60yud"]
+[ext_resource type="Shader" path="res://shaders/key.gdshader" id="1_dc2b8"]
+[ext_resource type="Texture2D" uid="uid://c35jucfvqwq6b" path="res://assets/circle.png" id="2_0hffx"]
+[ext_resource type="Script" path="res://scripts/collectible.gd" id="3_psnef"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yaeyj"]
+shader = ExtResource("1_dc2b8")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/width = 1.0
+shader_parameter/pattern = 0
+shader_parameter/inside = true
+shader_parameter/add_margins = false
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2mgj0"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_prw2f"]
+blend_mode = 2
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1kwx8"]
+blend_mode = 1
+
+[sub_resource type="Animation" id="Animation_mp5un"]
+resource_name = "idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/OuterRing:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 2),
+"transitions": PackedFloat32Array(0.615572, 3.4822, 0.615572),
+"update": 0,
+"values": [Vector2(0.121265, 0.121265), Vector2(0.182836, 0.182836), Vector2(0.121265, 0.121265)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup/CutoutRing:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.8),
+"transitions": PackedFloat32Array(1, 1.8025, 2),
+"update": 0,
+"values": [Vector2(0.0924509, 0.0924509), Vector2(0.149296, 0.149296), Vector2(0.0924509, 0.0924509)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasGroup/InnerCircle:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.0746206, 0.0746206), Vector2(0.119155, 0.119155), Vector2(0.0746206, 0.0746206)]
+}
+
+[sub_resource type="Animation" id="Animation_wrpat"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasGroup/OuterRing:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.121265, 0.121265)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CanvasGroup/CutoutRing:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.0924509, 0.0924509)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CanvasGroup/InnerCircle:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.0746206, 0.0746206)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o7nov"]
+_data = {
+"RESET": SubResource("Animation_wrpat"),
+"idle": SubResource("Animation_mp5un")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tbf6j"]
+animation = &"idle"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_08y6v"]
+
+[node name="Key" type="Node2D"]
+script = ExtResource("1_60yud")
+
+[node name="CanvasGroup" type="CanvasGroup" parent="."]
+material = SubResource("ShaderMaterial_yaeyj")
+scale = Vector2(0.791369, 0.791369)
+
+[node name="OuterRing" type="Sprite2D" parent="CanvasGroup"]
+material = SubResource("CanvasItemMaterial_2mgj0")
+scale = Vector2(0.121265, 0.121265)
+texture = ExtResource("2_0hffx")
+
+[node name="CutoutRing" type="Sprite2D" parent="CanvasGroup"]
+material = SubResource("CanvasItemMaterial_prw2f")
+scale = Vector2(0.0924509, 0.0924509)
+texture = ExtResource("2_0hffx")
+
+[node name="InnerCircle" type="Sprite2D" parent="CanvasGroup"]
+material = SubResource("CanvasItemMaterial_1kwx8")
+scale = Vector2(0.0746206, 0.0746206)
+texture = ExtResource("2_0hffx")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_o7nov")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeAnimation_tbf6j")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="Collectible" type="Node2D" parent="."]
+script = ExtResource("3_psnef")
+
+[node name="Area2D" type="Area2D" parent="Collectible"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collectible/Area2D"]
+shape = SubResource("CircleShape2D_08y6v")
+
+[connection signal="collected" from="Collectible" to="." method="_on_collectible_collected"]
+[connection signal="body_entered" from="Collectible/Area2D" to="Collectible" method="_on_area_2d_body_entered"]
