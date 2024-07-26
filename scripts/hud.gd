@@ -14,10 +14,10 @@ func _ready():
 
 
 func _process(_delta):
-	if player:
-		var cpos = Vector2.ZERO					# Top-left camera position
-		if player.has_node("Camera2D"):
-			cpos = player.get_node("Camera2D").global_position - get_viewport().get_visible_rect().size / 2
-		position = player.position - cpos		# Player position relative to window space
-		pass
+	# if player:
+	# 	var cpos = Vector2.ZERO					# Top-left camera position
+	# 	if player.has_node("Camera2D"):
+	# 		cpos = player.get_node("Camera2D").global_position - get_viewport().get_visible_rect().size / 2
+	# 	position = player.position - cpos		# Player position relative to window space
+	# 	pass
 	pass
