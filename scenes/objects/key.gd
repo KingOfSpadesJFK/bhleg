@@ -6,4 +6,6 @@ signal unlocked
 func _on_collectible_collected():
 	unlocked.emit()
 	queue_free()
-	pass # Replace with function body.
+	
+	# Unlock the keyhole
+	get_tree().call_group("Keyhole", "_unlock_keyhole")

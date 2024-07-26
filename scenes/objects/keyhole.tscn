@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://pwsqdsynruyl"]
+
+[ext_resource type="Script" path="res://scenes/objects/keyhole.gd" id="1_y0lcp"]
+[ext_resource type="Texture2D" uid="uid://gelb6iwmiqqt" path="res://assets/keyhole_small.png" id="2_n7rca"]
+[ext_resource type="Texture2D" uid="uid://ov7vtssppitc" path="res://assets/keyhole_big.png" id="3_lks4k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1xuqc"]
+radius = 16.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fhqq3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_n7rca")
+}],
+"loop": true,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_lks4k")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
+}]
+
+[node name="Keyhole" type="Node2D" groups=["Keyhole"]]
+script = ExtResource("1_y0lcp")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_1xuqc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fhqq3")
+animation = &"closed"
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]

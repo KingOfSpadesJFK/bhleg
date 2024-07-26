@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dbt75gicu8akh"]
+[gd_scene load_steps=9 format=3 uid="uid://dbt75gicu8akh"]
 
 [ext_resource type="PackedScene" uid="uid://cy4oa4aji2qxu" path="res://scenes/player.tscn" id="1_c205g"]
 [ext_resource type="Script" path="res://scripts/shadow_body.gd" id="2_5dcd2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="4_0mw62"]
 [ext_resource type="PackedScene" uid="uid://ckcyg1axbshy1" path="res://scenes/objects/key.tscn" id="4_gorjn"]
 [ext_resource type="Script" path="res://scripts/cell_container.gd" id="5_u5hsi"]
+[ext_resource type="PackedScene" uid="uid://pwsqdsynruyl" path="res://scenes/objects/keyhole.tscn" id="7_gtk0d"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j7rlh"]
 radius = 42.0
@@ -36,15 +37,10 @@ collision_mask = 0
 script = ExtResource("2_5dcd2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(73, 178)
+position = Vector2(64, 176)
 shape = SubResource("CircleShape2D_j7rlh")
 disabled = true
 metadata/is_main_shape = false
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(342, 170)
-shape = SubResource("CircleShape2D_j7rlh")
-disabled = true
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = ExtResource("3_ufcio")
@@ -79,3 +75,7 @@ grow_horizontal = 2
 script = ExtResource("5_u5hsi")
 red_cells = 10
 cyan_cells = 10
+
+[node name="Keyhole" parent="." instance=ExtResource("7_gtk0d")]
+position = Vector2(344, 168)
+next_scene = "test_level"
