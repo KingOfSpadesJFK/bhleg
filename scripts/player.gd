@@ -91,7 +91,7 @@ func _flash_light():
 	var angle: float = deg_to_rad(_flash_angle + (FLASH_SPREAD / 2.0))
 	
 	# Initial starting ray cast
-	var mid_pos: Vector2
+	var mid_pos: Vector2 = Vector2.ZERO
 	var start_pos: Vector2 = _flash_point.global_position
 	var full_length: Vector2 = Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH
 	var query = PhysicsRayQueryParameters2D.create(start_pos, _flash_point.global_position + full_length)
@@ -102,7 +102,7 @@ func _flash_light():
 
 	# Record previous entries
 	var prev_pos = start_pos
-	var v = (env_result.position - prev_pos).normalized()
+	var v = (mid_pos - prev_pos).normalized()
 	var prev_dir = atan2(v.y, v.x)
 	
 	# Raycast the samples

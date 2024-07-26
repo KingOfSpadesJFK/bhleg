@@ -74,7 +74,7 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 			if c.has_meta(META_SHADOW_EXTENT) && c.has_meta(META_SHADOW_HOLE):
 				# If there is a bounding box, check if input extent intersects the new polygon
 				var box: Rect2 = c.get_meta(META_SHADOW_EXTENT) as Rect2
-				if extent.intersects(box):		# If so, add it to the poly queue
+				if Geometry2D.intersect_polygons(entry.polygon, verts):
 					entry.extent = box
 					entry.is_hole = c.get_meta(META_SHADOW_HOLE)
 					poly_queue.append(entry)
@@ -83,6 +83,7 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 
 	# Loop through the poly queue
 	var i: int = 0
+	var main_body
 	while i < poly_queue.size():
 		# Run a boolean operation on these polygons
 		var col_poly: PolyStackEntry = poly_queue[i]
@@ -90,8 +91,12 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 		var combined: Array[PackedVector2Array]
 		if col_poly.is_hole:
 			combined = Geometry2D.clip_polygons(col_poly.polygon, verts)		# Cut a hole in the holes
+		elif main_body:
+			combined = Geometry2D.merge_polygons(col_poly.polygon, main_body.polygon)
+			main_body.free()
+			main_body = null
 		else:
-			combined = Geometry2D.merge_polygons(col_poly.polygon, verts)		
+			combined = Geometry2D.merge_polygons(col_poly.polygon, verts)	
 
 		# Attach each polygon to a new CollisionPolygon2D
 		#  and add them to the tree
@@ -99,8 +104,10 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 			if !arr.is_empty():
 				var c = CollisionPolygon2D.new()
 				c.build_mode = CollisionPolygon2D.BuildMode.BUILD_SEGMENTS
-				c.polygon = arr.duplicate()			# Since arr will go bye-bye after the thread
+				c.polygon = arr
 				add_child(c)
+				if !(col_poly.is_hole || Geometry2D.is_polygon_clockwise(arr)):
+					main_body = c
 				
 				# Get the bounding box of the current polygon
 				c.set_meta(META_SHADOW_EXTENT, Bhleg.calculate_bounding_box(arr))
