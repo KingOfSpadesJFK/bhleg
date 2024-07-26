@@ -162,7 +162,7 @@ func _input(event):
 	# Since there's probs only gonna be one place we'll need this, put it here
 	#  A check to see if we should do the flash or not
 	var _flash_check: Callable = func() -> bool:		
-		if event.is_action_pressed("player_flash") && is_on_floor():
+		if event.is_action_pressed("player_flash"):
 			match flash_type:
 				FlashType.WHITE:
 					if _has_enough_for_white():
@@ -184,18 +184,19 @@ func _input(event):
 
 	if event is InputEventMouseButton:
 		_mouse_position = event.position
-
-		# Do the red thing instead
-		if event.is_action_released("player_flash") && _do_flash == FlashType.RED:
-			if red_cells >= roundi(_beam_charge):
-				red_cells -= roundi(_beam_charge)
-
-			_do_flash = FlashType.NONE
-		else:
-			# Activate... the flash!
-			_do_flash = _flash_check.call()
-			if _do_flash:
-				_flash_angle = _calculate_flash_direction(_mouse_position)
+		if  is_on_floor() && $CooldownTimer.is_stopped():
+			# Do the red thing instead
+			if event.is_action_released("player_flash") && _do_flash == FlashType.RED:
+				if red_cells >= roundi(_beam_charge):
+					red_cells -= roundi(_beam_charge)
+				_do_flash = FlashType.NONE
+				$CooldownTimer.start()
+			else:
+				# Activate... the flash!
+				_do_flash = _flash_check.call()
+				if _do_flash:
+					_flash_angle = _calculate_flash_direction(_mouse_position)
+					$CooldownTimer.start()
 	
 	if event is InputEventMouse:
 		_mouse_position = event.position
