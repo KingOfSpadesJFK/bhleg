@@ -40,6 +40,7 @@ script = ExtResource("3_465bv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(73, 178)
 shape = SubResource("CircleShape2D_j7rlh")
+disabled = true
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = ExtResource("3_ki0li")

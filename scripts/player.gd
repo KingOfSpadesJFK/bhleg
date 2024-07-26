@@ -18,8 +18,15 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var flash_type: FlashType = FlashType.WHITE
 
+@onready var _flash_point: Node2D = $FlashAnchor/FlashHead
+var _mouse_position: Vector2 = Vector2.ZERO
 var _do_flash: FlashType = FlashType.NONE
-var _flash_angle: float
+var _flash_angle: float :
+	set(value):
+		_flash_angle = value
+		$FlashAnchor.rotation = deg_to_rad(value)
+		pass
+
 var _flash_markers: Node
 var _beam_charge: float
 @onready var _camera: Camera2D = $Camera2D
@@ -39,6 +46,7 @@ func _process(_delta):
 		if _beam_charge > 3.0 && _beam_charge <= red_cells:
 			_beam_charge += _delta
 			
+	_flash_angle = _calculate_flash_direction(_mouse_position)
 	pass
 
 
@@ -79,29 +87,30 @@ func _flash_light():
 
 	# Initialize the raycasting
 	var space_state = get_world_2d().direct_space_state
-	var step: float = deg_to_rad(FLASH_SPREAD / FLASH_SAMPLES)
-	var angle: float = deg_to_rad(_flash_angle - FLASH_SPREAD / 2.0)
-
+	var step: float = deg_to_rad(FLASH_SPREAD) / FLASH_SAMPLES
+	var angle: float = deg_to_rad(_flash_angle + (FLASH_SPREAD / 2.0))
+	
 	# Initial starting ray cast
 	var mid_pos: Vector2
-	var query = PhysicsRayQueryParameters2D.create(global_position, Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH)
+	var start_pos: Vector2 = _flash_point.global_position
+	var full_length: Vector2 = Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH
+	var query = PhysicsRayQueryParameters2D.create(start_pos, _flash_point.global_position + full_length)
 	query.collision_mask = 1
 	var env_result = space_state.intersect_ray(query)
-	verts.append(global_position)
 	if env_result:
 		mid_pos = env_result.position
 
 	# Record previous entries
-	var prev_pos = verts[0]
+	var prev_pos = start_pos
 	var v = (env_result.position - prev_pos).normalized()
 	var prev_dir = atan2(v.y, v.x)
 	
 	# Raycast the samples
-	angle += step
+	angle -= step
 	for i in range(FLASH_SAMPLES-1):
 		# Raycast
 		var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
-		query.to = dir * FLASH_RAY_LENGTH
+		query.to = _flash_point.global_position + dir * FLASH_RAY_LENGTH
 		query.collision_mask = 1					# This first ray query will check for layer 1 (the environment)
 		env_result = space_state.intersect_ray(query)
 		
@@ -113,27 +122,30 @@ func _flash_light():
 			if next_dir - prev_dir >= PI / 120.0 || next_dir - prev_dir <= -PI / 120.0:
 				# Append to the polygon
 				verts.append(mid_pos)
-
-				# Create the debug marker
-				#var sp = Sprite2D.new()
-				#var t = PlaceholderTexture2D.new()
-				#t.size = Vector2(5,5)
-				#sp.texture = t
-				#sp.position = mid_pos
-				#_flash_markers.add_child(sp)
 			
 			prev_pos = mid_pos
 			mid_pos = env_result.position
 			prev_dir = next_dir
 
 		# Add the step
-		angle += step
+		angle -= step
 
 	# Finalize new polygon
 	verts.append(mid_pos)
-	verts.append(global_position)
-	shadow_body.add_polygon(PackedVector2Array(verts), Bhleg.calculate_bounding_box(PackedVector2Array(verts)))
-	print("Vert count: " + str(verts.size()))
+	verts.append(start_pos)
+	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts), Vector2(64,64))
+	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
+		shadow_body.add_polygon(PackedVector2Array(verts), extent)
+
+	# Create the debug markers
+	#for _v in verts:
+	#	# Create the debug marker
+	#	var sp = Sprite2D.new()
+	#	var t = PlaceholderTexture2D.new()
+	#	t.size = Vector2(5,5)
+	#	sp.texture = t
+	#	sp.position = _v
+	#	_flash_markers.add_child(sp)
 	
 	_do_flash = FlashType.NONE
 	
@@ -171,6 +183,8 @@ func _input(event):
 		return FlashType.NONE
 
 	if event is InputEventMouseButton:
+		_mouse_position = event.position
+
 		# Do the red thing instead
 		if event.is_action_released("player_flash") && _do_flash == FlashType.RED:
 			if red_cells >= roundi(_beam_charge):
@@ -181,10 +195,10 @@ func _input(event):
 			# Activate... the flash!
 			_do_flash = _flash_check.call()
 			if _do_flash:
-				_flash_angle = _calculate_flash_direction(event.position)
+				_flash_angle = _calculate_flash_direction(_mouse_position)
 	
-	if event is InputEventMouseMotion:
-		_flash_angle = _calculate_flash_direction(event.position)
+	if event is InputEventMouse:
+		_mouse_position = event.position
 
 
 func _calculate_flash_direction(mouse_pos: Vector2):

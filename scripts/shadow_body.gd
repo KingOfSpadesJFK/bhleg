@@ -3,6 +3,7 @@ class_name ShadowBody
 
 const META_SHADOW_EXTENT = "extent"
 const META_SHADOW_HOLE = "is_hole"
+const META_SHADOW_VISUAL = "visual"
 
 var _visual_poly: Node2D
 
@@ -10,7 +11,7 @@ class PolyStackEntry:
 	var polygon: PackedVector2Array
 	var extent: Rect2
 	var is_hole: bool
-	var owner: Node
+	var visual: Node
 
 
 func _enter_tree():
@@ -26,11 +27,13 @@ func _enter_tree():
 			var poly: Polygon2D = Polygon2D.new()
 			poly.polygon = c.polygon.duplicate()
 			_visual_poly.add_child(poly)
+			c.set_meta(META_SHADOW_VISUAL, poly)
 		
-		if c is CollisionShape2D:
+		elif c is CollisionShape2D:
 			if c.shape is CircleShape2D:
 				c.queue_free()
 
+				# Convert the circle into a polygon
 				var verts: Array[Vector2] = []
 				var r: float = (c.shape as CircleShape2D).radius
 				var rad: float = 0
@@ -39,20 +42,20 @@ func _enter_tree():
 					verts.append(Vector2(cos(rad), sin(rad)) * r + c.global_position)
 					rad += PI / 10.0
 
+				# Create the new polygon
 				var col: CollisionPolygon2D = CollisionPolygon2D.new()
 				col.build_mode = CollisionPolygon2D.BUILD_SEGMENTS
 				col.polygon = PackedVector2Array(verts)
 				add_child(col)
 
-				var extent: Rect2 = Rect2(c.global_position, Vector2(r,r))
-				extent.position = c.global_position
-				extent.size = Vector2(r, r)
+				var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts), Vector2(50,50))
 				col.set_meta(META_SHADOW_EXTENT, extent)
 				col.set_meta(META_SHADOW_HOLE, false)
 
 				var poly: Polygon2D = Polygon2D.new()
 				poly.polygon = PackedVector2Array(verts)
 				_visual_poly.add_child(poly)
+				col.set_meta(META_SHADOW_VISUAL, poly)
 
 	add_child(_visual_poly)
 
@@ -76,6 +79,7 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 					entry.is_hole = c.get_meta(META_SHADOW_HOLE)
 					poly_queue.append(entry)
 					c.queue_free()
+					#c.get_meta(META_SHADOW_VISUAL).queue_free()
 
 	# Loop through the poly queue
 	var i: int = 0
@@ -103,10 +107,11 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 
 				# Determine whether this polygon is a hole
 				c.set_meta(META_SHADOW_HOLE, col_poly.is_hole || Geometry2D.is_polygon_clockwise(arr))
-				
-				var flash_poly: Polygon2D = Polygon2D.new()
-				flash_poly.polygon = verts.duplicate()
-				_visual_poly.add_child(flash_poly)
+		
+		# Create the visual for the polygon
+		var flash_visual: Polygon2D = Polygon2D.new()
+		flash_visual.polygon = verts
+		_visual_poly.add_child(flash_visual)
 
 
 func _rand():
