@@ -68,11 +68,6 @@ func _physics_process(delta):
 
 
 func _flash_light():
-	var minv = func (curvec,newvec):
-		return Vector2(min(curvec.x,newvec.x),min(curvec.y,newvec.y))
-	var maxv = func (curvec,newvec):
-		return Vector2(max(curvec.x,newvec.x),max(curvec.y,newvec.y))
-
 	# Debugging markers
 	if _flash_markers:
 		_flash_markers.queue_free()
@@ -159,8 +154,8 @@ func _input(event):
 			match flash_type:
 				FlashType.WHITE:
 					if _has_enough_for_white():
-						#red_cells -= 1
-						#cyan_cells -= 1
+						red_cells -= 1
+						cyan_cells -= 1
 						flash.emit(1, 1)
 						return FlashType.WHITE
 				FlashType.RED:

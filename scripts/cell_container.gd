@@ -16,9 +16,6 @@ func _enter_tree():
 	# Initialize the box container itself
 	_container = BoxContainer.new()
 	_container.alignment = BoxContainer.ALIGNMENT_CENTER
-	_container.set_anchors_preset(Control.PRESET_CENTER, true)
-	
-	_container.add_theme_constant_override("separation", 1)
 	add_child(_container)
 
 	# Initialize a placeholder texture
@@ -46,6 +43,11 @@ func _enter_tree():
 	for i in range(cyan_cells):
 		_container.add_child(_blue_texture)
 		_blue_texture = _blue_texture.duplicate()
+
+
+func _ready():
+	_container.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	_container.add_theme_constant_override("separation", 1)
 
 
 # Decreases red and cyan cells from cell container
