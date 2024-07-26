@@ -148,6 +148,8 @@ anim_player = NodePath("../AnimationPlayer")
 script = ExtResource("3_psnef")
 
 [node name="Area2D" type="Area2D" parent="Collectible"]
+collision_layer = 4
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collectible/Area2D"]
 shape = SubResource("CircleShape2D_08y6v")

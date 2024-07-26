@@ -5,4 +5,5 @@ signal unlocked
 
 func _on_collectible_collected():
 	unlocked.emit()
+	queue_free()
 	pass # Replace with function body.
