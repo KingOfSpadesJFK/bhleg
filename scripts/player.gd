@@ -162,7 +162,7 @@ func _input(event):
 	# Since there's probs only gonna be one place we'll need this, put it here
 	#  A check to see if we should do the flash or not
 	var _flash_check: Callable = func() -> bool:		
-		if event.is_action_pressed("player_flash"):
+		if event.is_action_pressed("player_flash") && is_on_floor():
 			match flash_type:
 				FlashType.WHITE:
 					if _has_enough_for_white():
