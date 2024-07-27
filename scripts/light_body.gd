@@ -1,5 +1,5 @@
-extends StaticBody2D
-class_name ShadowBody
+extends CollisionObject2D
+class_name LightBody
 
 const META_SHADOW_EXTENT = "extent"
 const META_SHADOW_HOLE = "is_hole"
@@ -24,10 +24,7 @@ func _enter_tree():
 			c.set_meta(META_SHADOW_HOLE, false)
 
 			# Create the visual for the poly
-			var poly: Polygon2D = Polygon2D.new()
-			poly.polygon = c.polygon.duplicate()
-			_visual_poly.add_child(poly)
-			c.set_meta(META_SHADOW_VISUAL, poly)
+			add_visual_polygon(c.polygon)
 		
 		elif c is CollisionShape2D:
 			if c.shape is CircleShape2D:
@@ -46,12 +43,16 @@ func _enter_tree():
 				col.set_meta(META_SHADOW_EXTENT, extent)
 				col.set_meta(META_SHADOW_HOLE, false)
 
-				var poly: Polygon2D = Polygon2D.new()
-				poly.polygon = shape_poly.polygon
-				_visual_poly.add_child(poly)
-				col.set_meta(META_SHADOW_VISUAL, poly)
+				add_visual_polygon(shape_poly.polygon)
 
 	add_child(_visual_poly)
+
+
+func add_visual_polygon(polygon: PackedVector2Array):
+	var poly: Polygon2D = Polygon2D.new()
+	poly.polygon = polygon
+	_visual_poly.add_child(poly)
+
 
 ### Adds a polygon to the shadow body
 #	verts: The array of vertices for the polygon
@@ -117,10 +118,4 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 				c.set_meta(META_SHADOW_HOLE, col_poly.is_hole || Geometry2D.is_polygon_clockwise(arr))
 		
 		# Create the visual for the polygon
-		var flash_visual: Polygon2D = Polygon2D.new()
-		flash_visual.polygon = verts
-		_visual_poly.add_child(flash_visual)
-
-
-func _rand():
-	return 0.75 + randf() * 0.25
+		add_visual_polygon(verts)

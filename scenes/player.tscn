@@ -735,7 +735,7 @@ animation = &"squish"
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7gybw"]
-xfade_time = 0.3
+xfade_time = 0.05
 priority = 2
 advance_mode = 2
 advance_condition = &"is_moving"
@@ -803,7 +803,7 @@ states/fall/position = Vector2(778, 56)
 states/squish/node = SubResource("AnimationNodeAnimation_0rca7")
 states/squish/position = Vector2(573, -77)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_vhnsr"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "fall", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Walk", "fall", SubResource("AnimationNodeStateMachineTransition_f07b7"), "Idle", "fall", SubResource("AnimationNodeStateMachineTransition_aw7au"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0")]
-graph_offset = Vector2(-189, -221)
+graph_offset = Vector2(-104, 37)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2

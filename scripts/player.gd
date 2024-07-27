@@ -14,7 +14,7 @@ const TERMINAL_VELOCITY = 400.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # The static body to draw over
-@export var shadow_body: ShadowBody
+@export var shadow_body: LightBody
 
 # The light cells of the player
 @export var red_cells: int = 10
