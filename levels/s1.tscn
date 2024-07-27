@@ -29,6 +29,7 @@ red_cells = 3
 cyan_cells = 3
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." groups=["ShadowBoxes"]]
+z_index = -1
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("2_5dcd2")

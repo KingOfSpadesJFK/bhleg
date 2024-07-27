@@ -26,17 +26,20 @@ script = ExtResource("1_j74i2")
 position = Vector2(-9, 0)
 
 [node name="Line2D" type="Line2D" parent="FlashAnchor/FlashHead"]
+visible = false
 rotation = 0.785398
 points = PackedVector2Array(0, 0, 41, 0)
 width = 1.5
 default_color = Color(0.315749, 0.378573, 0.580516, 1)
 
 [node name="Line2D2" type="Line2D" parent="FlashAnchor/FlashHead"]
+visible = false
 points = PackedVector2Array(0, 0, 41, 0)
 width = 1.0
 default_color = Color(0.315749, 0.378573, 0.580516, 1)
 
 [node name="Line2D3" type="Line2D" parent="FlashAnchor/FlashHead"]
+visible = false
 rotation = -0.785398
 points = PackedVector2Array(0, 0, 41, 0)
 width = 1.5

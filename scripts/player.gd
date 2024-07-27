@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Player
 
+var _laser_beam: PackedScene = preload("res://scenes/objects/laser_beam.tscn")
 
 const SPEED = 150.0
 const JUMP_VELOCITY = -350.0
@@ -17,7 +18,7 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var red_cells: int = 10
 @export var cyan_cells: int = 10
 
-var flash_type: FlashType = FlashType.WHITE
+var flash_type: FlashType = FlashType.CYAN
 
 @onready var _flash_point: Node2D = $FlashAnchor/FlashHead
 var _mouse_position: Vector2 = Vector2.ZERO
@@ -43,10 +44,6 @@ enum FlashType {
 
 
 func _process(_delta):
-	if flash_type == FlashType.RED:
-		if _beam_charge > 3.0 && _beam_charge <= red_cells:
-			_beam_charge += _delta
-			
 	_flash_angle = _calculate_flash_direction(_mouse_position)
 	pass
 
@@ -75,7 +72,7 @@ func _physics_process(delta):
 
 	# Do flash routine 
 	#  MUST BE DONE IN _physics_step()!!!
-	if !(_do_flash == FlashType.NONE || _do_flash == FlashType.RED):
+	if !(_do_flash == FlashType.NONE || _do_flash == FlashType.CYAN):
 		_flash_light()
 
 
@@ -155,7 +152,7 @@ func _flash_light():
 	
 
 func _has_enough_for_white() -> bool: return red_cells >= 1 && cyan_cells >= 1
-func _has_enough_for_red() -> bool: return red_cells >= 1
+func _has_enough_for_red() -> bool: return red_cells >= 5
 func _has_enough_for_cyan() -> bool: return cyan_cells >= 5
 
 
@@ -165,7 +162,7 @@ func _has_enough_for_cyan() -> bool: return cyan_cells >= 5
 func _input(event):
 	# Since there's probs only gonna be one place we'll need this, put it here
 	#  A check to see if we should do the flash or not
-	var _flash_check: Callable = func() -> bool:		
+	var _flash_check: Callable = func() -> FlashType:		
 		if event.is_action_pressed("player_flash"):
 			match flash_type:
 				FlashType.WHITE:
@@ -176,11 +173,18 @@ func _input(event):
 						return FlashType.WHITE
 				FlashType.RED:
 					if _has_enough_for_red():
-						return FlashType.RED	# Do something else for red
+						red_cells -= 5
+						flash.emit(5, 0)
+						return FlashType.RED
 				FlashType.CYAN:
-					if _has_enough_for_cyan():
+					if _has_enough_for_cyan():	# Shoot a laser for cyan
 						cyan_cells -= 5
-						return FlashType.CYAN
+						flash.emit(5, 0)
+						var b = _laser_beam.instantiate()
+						b.position = $FlashAnchor/BeamPoint.global_position
+						b.rotation = deg_to_rad(_flash_angle)
+						add_sibling(b)
+						return FlashType.NONE
 				_:
 					return FlashType.NONE	
 		
@@ -189,18 +193,11 @@ func _input(event):
 	if event is InputEventMouseButton:
 		_mouse_position = event.position
 		if  is_on_floor() && $CooldownTimer.is_stopped():
-			# Do the red thing instead
-			if event.is_action_released("player_flash") && _do_flash == FlashType.RED:
-				if red_cells >= roundi(_beam_charge):
-					red_cells -= roundi(_beam_charge)
-				_do_flash = FlashType.NONE
+			# Activate... the flash!
+			_do_flash = _flash_check.call()
+			if _do_flash:
+				_flash_angle = _calculate_flash_direction(_mouse_position)
 				$CooldownTimer.start()
-			else:
-				# Activate... the flash!
-				_do_flash = _flash_check.call()
-				if _do_flash:
-					_flash_angle = _calculate_flash_direction(_mouse_position)
-					$CooldownTimer.start()
 	
 	if event is InputEventMouse:
 		_mouse_position = event.position
