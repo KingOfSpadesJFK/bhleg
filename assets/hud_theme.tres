@@ -1,0 +1,4 @@
+[gd_resource type="Theme" format=3 uid="uid://bk5apwciqslv0"]
+
+[resource]
+BoxContainer/constants/separation = 1

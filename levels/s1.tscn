@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dbt75gicu8akh"]
+[gd_scene load_steps=10 format=3 uid="uid://dbt75gicu8akh"]
 
 [ext_resource type="PackedScene" uid="uid://cy4oa4aji2qxu" path="res://scenes/player.tscn" id="1_c205g"]
 [ext_resource type="Script" path="res://scripts/light_body.gd" id="2_5dcd2"]
 [ext_resource type="TileSet" uid="uid://du3n7xwnm051j" path="res://assets/tileset.tres" id="3_ufcio"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="4_0mw62"]
 [ext_resource type="PackedScene" uid="uid://ckcyg1axbshy1" path="res://scenes/objects/key.tscn" id="4_gorjn"]
+[ext_resource type="Theme" uid="uid://bk5apwciqslv0" path="res://assets/hud_theme.tres" id="5_68088"]
 [ext_resource type="Script" path="res://scripts/cell_container.gd" id="5_u5hsi"]
 [ext_resource type="PackedScene" uid="uid://pwsqdsynruyl" path="res://scenes/objects/keyhole.tscn" id="7_gtk0d"]
 
@@ -61,6 +62,7 @@ offset_right = -7.0
 offset_bottom = -4.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_68088")
 script = ExtResource("4_0mw62")
 player = NodePath("../../Player")
 

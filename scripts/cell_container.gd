@@ -4,8 +4,8 @@ class_name CellContainer
 
 @export var red_cells: int = 1
 @export var cyan_cells: int = 1
-var _red_texture: TextureRect
-var _blue_texture: TextureRect
+var _red_texture: ColorRect
+var _blue_texture: ColorRect
 var _container: BoxContainer 
 
 
@@ -18,28 +18,27 @@ func _enter_tree():
 	_container.alignment = BoxContainer.ALIGNMENT_CENTER
 	add_child(_container)
 
-	# Initialize a placeholder texture
-	var t: PlaceholderTexture2D = PlaceholderTexture2D.new()
-	t.size = Vector2(3,5)
-
 	# Create the red cells
-	_red_texture = TextureRect.new()
-	_red_texture.texture = t
-	_red_texture.expand_mode = TextureRect.EXPAND_KEEP_SIZE
-	_red_texture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_red_texture = ColorRect.new()
+	_red_texture.color = Color.html("#e04500")
+	_red_texture.custom_minimum_size = Vector2(3, 5)
+	_red_texture.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_red_texture.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	for i in range(red_cells):
 		_container.add_child(_red_texture)
 		_red_texture = _red_texture.duplicate()
 	
 	# Create the border
-	var tb: PlaceholderTexture2D = PlaceholderTexture2D.new()
-	tb.size = Vector2(1,7)
-	var b: TextureRect = TextureRect.new()
-	b.texture = tb
+	var b: ColorRect = ColorRect.new()
+	b.color = Color.html("#283255")
+	b.custom_minimum_size = Vector2(1, 7)
+	b.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+	b.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_container.add_child(b)
 	
 	# Create the cyan cells
 	_blue_texture = _red_texture.duplicate()
+	_blue_texture.color = Color.html("#00c9ff")
 	for i in range(cyan_cells):
 		_container.add_child(_blue_texture)
 		_blue_texture = _blue_texture.duplicate()
