@@ -18,9 +18,12 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var red_cells: int = 10
 @export var cyan_cells: int = 10
 
-var flash_type: FlashType = FlashType.CYAN
+var flash_type: FlashType = FlashType.WHITE
+var direction: float = 1.0
 
 @onready var _flash_point: Node2D = $FlashAnchor/FlashHead
+@onready var _anim_tree: AnimationTree = $Blob/AnimationTree
+
 var _mouse_position: Vector2 = Vector2.ZERO
 var _do_flash: FlashType = FlashType.NONE
 var _flash_angle: float :
@@ -30,7 +33,6 @@ var _flash_angle: float :
 		pass
 
 var _flash_markers: Node
-var _beam_charge: float
 @onready var _camera: Camera2D = $Camera2D
 
 signal flash(red_count: int, cyan_count: int)
@@ -43,6 +45,11 @@ enum FlashType {
 }
 
 
+func _ready():
+	if _anim_tree:
+		_anim_tree.active = true
+
+
 func _process(_delta):
 	_flash_angle = _calculate_flash_direction(_mouse_position)
 	pass
@@ -53,6 +60,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
+	# Handle terminal velocity
 	if velocity.y > TERMINAL_VELOCITY:
 		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, velocity.y - TERMINAL_VELOCITY)
 
@@ -60,20 +68,32 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("player_jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("player_left", "player_right")
-	if direction:
+	# Handle player direction
+	var dir = Input.get_axis("player_left", "player_right")
+	if dir:
+		direction = dir
 		velocity.x = direction * SPEED
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, 1000.0 * delta)
 
 	move_and_slide()
+	_update_animation_parameters()
 
 	# Do flash routine 
 	#  MUST BE DONE IN _physics_step()!!!
 	if !(_do_flash == FlashType.NONE || _do_flash == FlashType.CYAN):
 		_flash_light()
+
+
+func _update_animation_parameters():
+	_anim_tree["parameters/conditions/is_idle"] = is_on_floor() && velocity.is_zero_approx()
+	_anim_tree["parameters/conditions/is_moving"] = is_on_floor() && !velocity.is_zero_approx()
+	_anim_tree["parameters/conditions/is_airborne"] = !is_on_floor()
+	_anim_tree["parameters/conditions/is_grounded"] = is_on_floor()
+
+	_anim_tree["parameters/Idle/blend_position"] = direction
+	_anim_tree["parameters/Walk/blend_position"] = direction
+	_anim_tree["parameters/Airborne/blend_position"] = Vector2(direction, velocity.y / 100.0)
 
 
 func _flash_light():
