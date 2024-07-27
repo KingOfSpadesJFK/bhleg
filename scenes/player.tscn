@@ -23,7 +23,7 @@ shader_parameter/pattern = 0
 shader_parameter/inside = true
 shader_parameter/add_margins = false
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_fo0wj"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_nsir3"]
 atlas = ExtResource("5_qrmuq")
 region = Rect2(0, 0, 8, 8)
 
@@ -32,7 +32,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -44,7 +44,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -56,7 +56,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -68,7 +68,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -76,6 +76,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0.078125, 0.078125)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -2)]
 }
 
 [sub_resource type="Animation" id="Animation_fy2ja"]
@@ -86,7 +98,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -98,7 +110,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -110,7 +122,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -122,7 +134,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -130,6 +142,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(0.965936, 0.420448, 1),
 "update": 0,
 "values": [Vector2(0.078125, 0.078125), Vector2(0.0661681, 0.0851365), Vector2(0.0880321, 0.0602741)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.35),
+"transitions": PackedFloat32Array(0.965936, 0.420448, 1),
+"update": 0,
+"values": [Vector2(2, -2), Vector2(6, -4), Vector2(3, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_bsfst"]
@@ -139,7 +163,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -151,7 +175,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -163,7 +187,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -175,7 +199,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -183,6 +207,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(-2, -4.14106, -4),
 "update": 0,
 "values": [Vector2(0.069, 0.088), Vector2(0.083, 0.065), Vector2(0.078125, 0.078125)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.8, 3),
+"transitions": PackedFloat32Array(-2, -4.14106, -4),
+"update": 0,
+"values": [Vector2(2, -5), Vector2(2, 1), Vector2(2, -3.125)]
 }
 
 [sub_resource type="Animation" id="Animation_m3k0l"]
@@ -192,7 +228,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -204,7 +240,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -216,7 +252,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -228,7 +264,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -236,6 +272,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(-2, -4.14106, -4),
 "update": 0,
 "values": [Vector2(0.069, 0.088), Vector2(0.083, 0.065), Vector2(0.078125, 0.078125)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.8, 3),
+"transitions": PackedFloat32Array(-2, -4.14106, -4),
+"update": 0,
+"values": [Vector2(-2, -5), Vector2(-2, 1), Vector2(-2, -3.125)]
 }
 
 [sub_resource type="Animation" id="Animation_cxjug"]
@@ -246,7 +294,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -258,7 +306,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -270,7 +318,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -282,7 +330,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -291,13 +339,25 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(0.078125, 0.078125), Vector2(0.0661681, 0.0851365), Vector2(0.0880321, 0.0602741)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.35),
+"transitions": PackedFloat32Array(0.965936, 0.420448, 1),
+"update": 0,
+"values": [Vector2(-2, -2), Vector2(-6, -4), Vector2(-3, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_aokpo"]
 resource_name = "jump_right"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -309,7 +369,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -321,7 +381,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -333,7 +393,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -342,13 +402,25 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(0.0530952, 0.0943589), Vector2(0.0944548, 0.0568022), Vector2(0.0780762, 0.0753332), Vector2(0.0732647, 0.0837575)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -9), Vector2(2, -3), Vector2(2, -6)]
+}
 
 [sub_resource type="Animation" id="Animation_abio0"]
 resource_name = "jump_left"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -360,7 +432,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -372,7 +444,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -384,7 +456,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -392,6 +464,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Vector2(0.0530952, 0.0943589), Vector2(0.0944548, 0.0568022), Vector2(0.0780762, 0.0753332), Vector2(0.0732647, 0.0837575)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-1, -9), Vector2(-2, -3), Vector2(-2, -6)]
 }
 
 [sub_resource type="Animation" id="Animation_rfsl6"]
@@ -401,7 +485,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -413,7 +497,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -425,7 +509,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -437,7 +521,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -445,6 +529,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0.0640862, 0.0894205), Vector2(0.06, 0.093)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 2), Vector2(1, 3)]
 }
 
 [sub_resource type="Animation" id="Animation_tr60y"]
@@ -455,7 +551,7 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -467,7 +563,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -479,7 +575,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -491,7 +587,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -500,6 +596,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(0.0640862, 0.0894205), Vector2(0.06, 0.093)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Eyes:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-2, 2), Vector2(-2, 3)]
+}
 
 [sub_resource type="Animation" id="Animation_ksk4p"]
 resource_name = "squish"
@@ -507,7 +615,7 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals/Body:position")
+tracks/0/path = NodePath("HeadBodyGroup/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -519,7 +627,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals/Body:scale")
+tracks/1/path = NodePath("HeadBodyGroup/Body:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -531,7 +639,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals/Head:position")
+tracks/2/path = NodePath("HeadBodyGroup/Head:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -543,7 +651,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Visuals/Head:scale")
+tracks/3/path = NodePath("HeadBodyGroup/Head:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -658,6 +766,7 @@ advance_mode = 2
 advance_condition = &"is_airborne"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vd63h"]
+xfade_time = 0.1
 priority = 2
 advance_mode = 2
 advance_condition = &"is_grounded"
@@ -694,7 +803,7 @@ states/fall/position = Vector2(778, 56)
 states/squish/node = SubResource("AnimationNodeAnimation_0rca7")
 states/squish/position = Vector2(573, -77)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_vhnsr"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "fall", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Walk", "fall", SubResource("AnimationNodeStateMachineTransition_f07b7"), "Idle", "fall", SubResource("AnimationNodeStateMachineTransition_aw7au"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0")]
-graph_offset = Vector2(-172, -88)
+graph_offset = Vector2(-189, -221)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -754,21 +863,23 @@ debug_color = Color(0.854728, 0.32944, 0.435656, 0.42)
 
 [node name="Blob" type="Node2D" parent="."]
 
-[node name="Visuals" type="CanvasGroup" parent="Blob"]
+[node name="HeadBodyGroup" type="CanvasGroup" parent="Blob"]
 material = SubResource("ShaderMaterial_o7k2v")
 
-[node name="Head" type="Sprite2D" parent="Blob/Visuals"]
+[node name="Head" type="Sprite2D" parent="Blob/HeadBodyGroup"]
 scale = Vector2(0.078125, 0.078125)
 texture = ExtResource("4_60g3m")
 
-[node name="Body" type="Sprite2D" parent="Blob/Visuals"]
+[node name="Body" type="Sprite2D" parent="Blob/HeadBodyGroup"]
 position = Vector2(-4, 3)
 scale = Vector2(0.078125, 0.0495793)
 texture = ExtResource("4_60g3m")
 
-[node name="Eyes" type="Sprite2D" parent="Blob"]
-position = Vector2(2, -2)
-texture = SubResource("AtlasTexture_fo0wj")
+[node name="Eyes" type="Node2D" parent="Blob"]
+position = Vector2(0, -2)
+
+[node name="Sprite" type="Sprite2D" parent="Blob/Eyes"]
+texture = SubResource("AtlasTexture_nsir3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Blob"]
 libraries = {

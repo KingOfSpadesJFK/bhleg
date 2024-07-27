@@ -15,15 +15,24 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # The static body to draw over
 @export var shadow_body: ShadowBody
+
+# The light cells of the player
 @export var red_cells: int = 10
 @export var cyan_cells: int = 10
 
+# What type of flash the player is using
 var flash_type: FlashType = FlashType.WHITE
+
+# Which direction the player is walking towards
 var direction: float = 1.0
 
+# Necessary nodes
 @onready var _flash_point: Node2D = $FlashAnchor/FlashHead
 @onready var _anim_tree: AnimationTree = $Blob/AnimationTree
+@onready var _eyes_sprite: Node2D = $Blob/Eyes/Sprite
 
+var _blob_dir: float = direction
+var _eyes_angle: float = 0.0
 var _mouse_position: Vector2 = Vector2.ZERO
 var _do_flash: FlashType = FlashType.NONE
 var _flash_angle: float :
@@ -77,7 +86,7 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, 1000.0 * delta)
 
 	move_and_slide()
-	_update_animation_parameters()
+	_update_animation_parameters(delta)
 
 	# Do flash routine 
 	#  MUST BE DONE IN _physics_step()!!!
@@ -85,17 +94,25 @@ func _physics_process(delta):
 		_flash_light()
 
 
-func _update_animation_parameters():
+# Function for alot of the visual stuff
+func _update_animation_parameters(_delta: float):
 	_anim_tree["parameters/conditions/is_idle"] = is_on_floor() && velocity.is_zero_approx()
 	_anim_tree["parameters/conditions/is_moving"] = is_on_floor() && !velocity.is_zero_approx()
 	_anim_tree["parameters/conditions/is_airborne"] = !is_on_floor()
 	_anim_tree["parameters/conditions/is_grounded"] = is_on_floor()
 
-	_anim_tree["parameters/Idle/blend_position"] = direction
-	_anim_tree["parameters/Walk/blend_position"] = direction
-	_anim_tree["parameters/Airborne/blend_position"] = Vector2(direction, velocity.y / 100.0)
+	_eyes_angle = lerp_angle(_eyes_angle, deg_to_rad(_flash_angle), 15.0 * _delta)
+	var normal = Vector2(cos(_eyes_angle), sin(_eyes_angle))
+	_eyes_sprite.position = normal * 3.0 - Vector2(_blob_dir, 0.0)
+
+	# Update the blend positions
+	_blob_dir = lerp(_blob_dir, direction, 8.0 * _delta)
+	_anim_tree["parameters/Idle/blend_position"] = _blob_dir
+	_anim_tree["parameters/Walk/blend_position"] = _blob_dir
+	_anim_tree["parameters/Airborne/blend_position"] = Vector2(_blob_dir, velocity.y / 100.0)
 
 
+# Where the flash of light polygon is made
 func _flash_light():
 	# Debugging markers
 	if _flash_markers:
