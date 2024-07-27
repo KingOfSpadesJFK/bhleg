@@ -27,8 +27,6 @@ polygon = PackedVector2Array(36, 162, 58, 149, 91, 140, 117, 159, 121, 184, 100,
 [node name="Player" parent="." node_paths=PackedStringArray("shadow_body") instance=ExtResource("2_butpl")]
 z_index = 1
 position = Vector2(71, 179)
-collision_layer = 2
-collision_mask = 5
 shadow_body = NodePath("../StaticBody2D")
 red_cells = 1000
 cyan_cells = 1000

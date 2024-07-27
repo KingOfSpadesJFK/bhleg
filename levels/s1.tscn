@@ -24,15 +24,13 @@ color = Color(0, 0, 0, 1)
 [node name="Player" parent="." node_paths=PackedStringArray("shadow_body") instance=ExtResource("1_c205g")]
 z_index = 1
 position = Vector2(71, 179)
-collision_layer = 2
-collision_mask = 5
 shadow_body = NodePath("../StaticBody2D")
 red_cells = 3
 cyan_cells = 3
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." groups=["ShadowBoxes"]]
 collision_layer = 4
-collision_mask = 0
+collision_mask = 2
 script = ExtResource("2_5dcd2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
