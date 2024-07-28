@@ -21,7 +21,9 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var cyan_cells: int = 10
 
 # What type of flash the player is using
-var flash_type: FlashType = FlashType.WHITE
+var flash_type: FlashType = FlashType.RED
+var _flash_order_index: int = 1
+var _flash_order: Array[FlashType] = [FlashType.WHITE, FlashType.RED, FlashType.CYAN]
 
 # Which direction the player is walking towards
 var direction: float = 1.0
@@ -200,7 +202,14 @@ func _flash_light():
 	verts.append(start_pos)
 	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts))
 	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
-		shadow_body.add_polygon(PackedVector2Array(verts), extent)
+		get_tree().call_group("ShadowBoxes", "add_polygon", PackedVector2Array(verts), extent)
+		# shadow_body.add_polygon(PackedVector2Array(verts), extent)
+		match _do_flash:
+			FlashType.WHITE:
+				get_tree().call_group("RedLightBoxes", "subtract_polygon", PackedVector2Array(verts), extent)
+			FlashType.RED:
+				get_tree().call_group("RedLightBoxes", "add_polygon", PackedVector2Array(verts), extent)
+
 
 	# Create the debug markers
 	#for _v in verts:
@@ -265,6 +274,18 @@ func _input(event):
 	
 	if event is InputEventMouse:
 		_mouse_position = event.position
+	
+	if event is InputEventKey:
+		if event.is_action_pressed("player_switch_flash"):
+			_flash_order_index = (_flash_order_index + 1) % _flash_order.size()
+			flash_type = _flash_order[_flash_order_index]
+			match flash_type:
+				FlashType.WHITE:
+					print("Switched to white light")
+				FlashType.RED:
+					print("Switiched to red light")
+				FlashType.CYAN:
+					print("Switched to cyan light")
 
 
 func _calculate_flash_direction(mouse_pos: Vector2):
