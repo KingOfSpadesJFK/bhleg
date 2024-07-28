@@ -17,7 +17,7 @@ radius = 48.0416
 metadata/_edit_vertical_guides_ = [-204.0]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-z_index = -2
+z_index = -100
 offset_right = 576.0
 offset_bottom = 308.0
 size_flags_horizontal = 3
@@ -31,26 +31,28 @@ polygon = PackedVector2Array(36, 162, 58, 149, 91, 140, 117, 159, 121, 184, 100,
 [node name="Player" parent="." node_paths=PackedStringArray("shadow_body") instance=ExtResource("2_butpl")]
 z_index = 1
 position = Vector2(71, 179)
-shadow_body = NodePath("../StaticBody2D")
+shadow_body = NodePath("../ShadowBoxes")
 red_cells = 1000
 cyan_cells = 1000
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["ShadowBoxes"]]
-z_index = -1
+[node name="ShadowBoxes" type="StaticBody2D" parent="." groups=["ShadowBoxes"]]
+z_index = -10
+z_as_relative = false
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_465bv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShadowBoxes"]
 position = Vector2(73, 178)
 shape = SubResource("CircleShape2D_j7rlh")
 disabled = true
 
-[node name="RedLight" type="Area2D" parent="."]
+[node name="RedLightBoxes" type="Area2D" parent="." groups=["RedLightBoxes"]]
 modulate = Color(0.878431, 0.270588, 0, 1)
+z_index = -10
 script = ExtResource("3_465bv")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RedLight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedLightBoxes"]
 position = Vector2(320, 162)
 shape = SubResource("CircleShape2D_aw75m")
 

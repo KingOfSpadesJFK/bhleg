@@ -6,13 +6,13 @@ const MIN_COORD = -MAX_COORD
 # Scene manager defaults
 var fade_out_speed: float = .350
 var fade_in_speed: float = .35
-var fade_out_pattern: String = "diagonal"
-var fade_in_pattern: String = "diagonal"
+var fade_out_pattern: String = "linear"
+var fade_in_pattern: String = "linear"
 var fade_out_smoothness = 0.2 # (float, 0, 1)
 var fade_in_smoothness = 0.2 # (float, 0, 1)
 var fade_out_inverted: bool = false
 var fade_in_inverted: bool = true
-var color: Color = Color(0, 0, 0)
+var color: Color = Color.WHITE
 var timeout: float = 0.0
 var clickable: bool = false
 var add_to_back: bool = true
