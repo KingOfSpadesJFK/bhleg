@@ -112,6 +112,7 @@ func subtract_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 				var v = _add_visual_polygon(arr, is_hole)
 				c.set_meta(META_SHADOW_VISUAL, v)
 
+				# It's a surprise tool to help us when merging wiht the main body
 				if (is_hole):
 					main_body = c
 	
@@ -216,8 +217,11 @@ func _generate_collision_polygon(polygon: PackedVector2Array, is_hole: bool) -> 
 	return c
 
 
+# Reorders children so holes are done first
 func _reorder_children(n: Node):
 	for c in n.get_children():
+		# If it has the meta, GET the meta
+		#                     ^^^ for your dyslexic ass
 		if c.has_meta(META_SHADOW_HOLE) && c.get_meta(META_SHADOW_HOLE):
 			c.move_to_front()
 	pass

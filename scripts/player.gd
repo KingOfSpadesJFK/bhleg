@@ -119,9 +119,8 @@ func _physics_process(delta):
 	_update_animation_parameters(delta)
 	
 	# Handle red light overlays
-	
 	for b in get_tree().get_nodes_in_group("RedLightBodies"):
-		print($HitBox.overlaps_area(b))
+		#print($HitBox.overlaps_area(b))
 		if $HitBox.overlaps_area(b):
 			gravity = b.gravity
 			damp = b.linear_damp
