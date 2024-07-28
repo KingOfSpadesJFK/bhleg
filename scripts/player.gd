@@ -11,7 +11,8 @@ const FLASH_SAMPLES = 200
 const TERMINAL_VELOCITY = 400.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+@export var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+@export var damp: float = 0.0
 
 # The static body to draw over
 @export var shadow_body: LightBody
@@ -21,8 +22,8 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var cyan_cells: int = 10
 
 # What type of flash the player is using
-var flash_type: FlashType = FlashType.RED
-var _flash_order_index: int = 1
+var flash_type: FlashType = FlashType.WHITE
+var _flash_order_index: int = 0
 var _flash_order: Array[FlashType] = [FlashType.WHITE, FlashType.RED, FlashType.CYAN]
 
 # Which direction the player is walking towards
@@ -90,8 +91,12 @@ func _physics_process(delta):
 		velocity.y += gravity * delta
 	
 	# Handle terminal velocity
-	if velocity.y > TERMINAL_VELOCITY:
-		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, 10.0 * delta)
+	if velocity.y > TERMINAL_VELOCITY - damp * 20.0:
+		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, damp * 10.0 * delta)
+	
+	# Handle damping
+	if damp:
+		velocity = lerp(velocity, Vector2.ZERO, damp / 2.0 * delta)
 
 	# Handle jump.
 	if Input.is_action_just_pressed("player_jump") and is_on_floor():
@@ -112,6 +117,17 @@ func _physics_process(delta):
 
 	move_and_slide()
 	_update_animation_parameters(delta)
+	
+	# Handle red light overlays
+	
+	for b in get_tree().get_nodes_in_group("RedLightBodies"):
+		print($HitBox.overlaps_area(b))
+		if $HitBox.overlaps_area(b):
+			gravity = b.gravity
+			damp = b.linear_damp
+		else:
+			gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+			damp = 0.0
 
 	# Backup next and restore prev
 	_next_pos   = position
@@ -202,13 +218,13 @@ func _flash_light():
 	verts.append(start_pos)
 	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts))
 	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
-		get_tree().call_group("ShadowBoxes", "add_polygon", PackedVector2Array(verts), extent)
+		get_tree().call_group("ShadowBodies", "add_polygon", PackedVector2Array(verts), extent)
 		# shadow_body.add_polygon(PackedVector2Array(verts), extent)
 		match _do_flash:
 			FlashType.WHITE:
-				get_tree().call_group("RedLightBoxes", "subtract_polygon", PackedVector2Array(verts), extent)
+				get_tree().call_group("RedLightBodies", "subtract_polygon", PackedVector2Array(verts), extent)
 			FlashType.RED:
-				get_tree().call_group("RedLightBoxes", "add_polygon", PackedVector2Array(verts), extent)
+				get_tree().call_group("RedLightBodies", "add_polygon", PackedVector2Array(verts), extent)
 
 
 	# Create the debug markers
@@ -252,7 +268,7 @@ func _input(event):
 				FlashType.CYAN:
 					if _has_enough_for_cyan():	# Shoot a laser for cyan
 						cyan_cells -= 5
-						flash.emit(5, 0)
+						flash.emit(0, 5)
 						var b = _laser_beam.instantiate()
 						b.position = $FlashAnchor/BeamPoint.global_position
 						b.rotation = deg_to_rad(_flash_angle)

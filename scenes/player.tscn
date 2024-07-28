@@ -12,9 +12,6 @@ length = 8.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_hw20r"]
 radius = 5.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_eagm6"]
-radius = 9.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o7k2v"]
 shader = ExtResource("3_f08xj")
 shader_parameter/color = Color(0, 0, 0, 1)
@@ -805,6 +802,9 @@ states/squish/position = Vector2(573, -77)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_vhnsr"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "fall", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Walk", "fall", SubResource("AnimationNodeStateMachineTransition_f07b7"), "Idle", "fall", SubResource("AnimationNodeStateMachineTransition_aw7au"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0")]
 graph_offset = Vector2(-147, -13)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_eagm6"]
+radius = 9.0
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 5
@@ -852,15 +852,6 @@ shape = SubResource("CircleShape2D_hw20r")
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="HitBox" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 8
-script = ExtResource("2_wedjy")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-shape = SubResource("CircleShape2D_eagm6")
-debug_color = Color(0.854728, 0.32944, 0.435656, 0.42)
-
 [node name="Blob" type="Node2D" parent="."]
 
 [node name="HeadBodyGroup" type="CanvasGroup" parent="Blob"]
@@ -897,5 +888,14 @@ parameters/conditions/is_moving = false
 parameters/Airborne/blend_position = Vector2(0.000909925, 0.032258)
 parameters/Idle/blend_position = 0.915326
 parameters/Walk/blend_position = 1.04742
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 12
+script = ExtResource("2_wedjy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_eagm6")
+debug_color = Color(0.854728, 0.32944, 0.435656, 0.42)
 
 [connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]

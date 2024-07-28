@@ -6,6 +6,7 @@ const META_SHADOW_HOLE = "is_hole"
 const META_SHADOW_VISUAL = "visual"
 
 @export var texture: Texture2D
+@export var solid: bool = false
 var _visual_group: CanvasGroup
 
 class PolyStackEntry:
@@ -70,55 +71,7 @@ func _add_visual_polygon(polygon: PackedVector2Array, hole: bool = false) -> Pol
 #	verts: The array of vertices for the polygon
 #	extent: The bounding box of the passed in polygon
 func subtract_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
-	# Generate the polygon queue
-	var poly_queue = _generate_poly_queue(verts, extent)
-
-	# Loop through the poly queue
-	var i: int = 0
-	var main_hole: CollisionPolygon2D = null
-	while i < poly_queue.size():
-		# Run a boolean operation on these polygons
-		var col_poly: PolyStackEntry = poly_queue[i]
-		i += 1
-		var combined: Array[PackedVector2Array]
-
-		# If the poly is a hole...
-		#  merge the flash into the hole
-		if !col_poly.is_hole:
-			combined = Geometry2D.clip_polygons(col_poly.polygon, verts)	
-
-		# If the main body is already dealt with... 
-		#  merge the main poly with the current poly
-		elif main_hole:		
-			combined = Geometry2D.merge_polygons(col_poly.polygon, main_hole.polygon)	# Merge the main body with the col_poly
-			main_hole.free()
-			main_hole = null
-			pass
-		
-		# Just clip the flash from the current poly
-		else:
-			combined = Geometry2D.merge_polygons(col_poly.polygon, verts)	
-
-		# Attach each polygon to a new CollisionPolygon2D
-		#  and add them to the tree
-		for arr: PackedVector2Array in combined:
-			if !arr.is_empty():
-				var is_hole = col_poly.is_hole || Geometry2D.is_polygon_clockwise(arr)
-				var c = _generate_collision_polygon(arr, is_hole)
-
-				if (is_hole):
-					main_hole = c
-	
-	# Reorder the children
-	_reorder_children(self)
-	_reorder_children(_visual_group)
-
-
-### Adds a polygon to the light body
-#	verts: The array of vertices for the polygon
-#	extent: The bounding box of the passed in polygon
-func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
-	# Generate the polygon queue
+	# Get a polygon queue containing all the polygons the flash is overlapping
 	var poly_queue = _generate_poly_queue(verts, extent)
 
 	# Loop through the poly queue
@@ -131,20 +84,21 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 		var combined: Array[PackedVector2Array]
 
 		# If the poly is a hole...
-		#  cut the flash from the hole
-		if col_poly.is_hole:
-			combined = Geometry2D.clip_polygons(col_poly.polygon, verts)
+		#  merge the flash into the hole
+		if !solid && col_poly.is_hole:
+			combined = Geometry2D.merge_polygons(col_poly.polygon, verts)	
 
 		# If the main body is already dealt with... 
 		#  merge the main poly with the current poly
 		elif main_body:		
-			combined = Geometry2D.merge_polygons(col_poly.polygon, main_body.polygon)	# Merge the main body with the col_poly
+			combined = Geometry2D.clip_polygons(col_poly.polygon, main_body.polygon)	# Merge the main body with the col_poly
 			main_body.free()
 			main_body = null
+			pass
 		
-		# Just merge the flash with the current poly
+		# Just clip the flash from the current poly
 		else:
-			combined = Geometry2D.merge_polygons(col_poly.polygon, verts)	
+			combined = Geometry2D.clip_polygons(col_poly.polygon, verts)	
 
 		# Attach each polygon to a new CollisionPolygon2D
 		#  and add them to the tree
@@ -153,8 +107,72 @@ func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
 				var is_hole = col_poly.is_hole || Geometry2D.is_polygon_clockwise(arr)
 				var c = _generate_collision_polygon(arr, is_hole)
 
-				if !(is_hole):
+				# Generate the visual for the polygon
+				#  and associate the visual to the collision
+				var v = _add_visual_polygon(arr, is_hole)
+				c.set_meta(META_SHADOW_VISUAL, v)
+
+				if (is_hole):
 					main_body = c
+	
+	# Reorder the children
+	_reorder_children(self)
+	_reorder_children(_visual_group)
+
+
+### Adds a polygon to the light body
+#	verts: The array of vertices for the polygon
+#	extent: The bounding box of the passed in polygon
+func add_polygon(verts: PackedVector2Array, extent: Rect2) -> void:
+	# Get a polygon queue containing all the polygons the flash is overlapping
+	var poly_queue = _generate_poly_queue(verts, extent)
+
+	# If this flash overlaps nothing at all...
+	#  just add the collision poly
+	if poly_queue.is_empty():
+		_generate_collision_polygon(verts, false)
+	
+	# If this flash is overlapping something...
+	else:
+		# Loop through the poly queue
+		var i: int = 0
+		var main_body: CollisionPolygon2D = null
+		while i < poly_queue.size():
+			# Run a boolean operation on these polygons
+			var col_poly: PolyStackEntry = poly_queue[i]
+			i += 1
+			var combined: Array[PackedVector2Array]
+
+			# If the poly is a hole...
+			#  cut the flash from the hole
+			if !solid && col_poly.is_hole:
+				combined = Geometry2D.clip_polygons(col_poly.polygon, verts)
+
+			# If the main body is already dealt with... 
+			#  merge the main poly with the current poly
+			elif main_body:		
+				combined = Geometry2D.merge_polygons(col_poly.polygon, main_body.polygon)	# Merge the main body with the col_poly
+				main_body.free()
+				main_body = null
+			
+			# Just merge the flash with the current poly
+			else:
+				combined = Geometry2D.merge_polygons(col_poly.polygon, verts)	
+
+			# Attach each polygon to a new CollisionPolygon2D
+			#  and add them to the tree
+			for arr: PackedVector2Array in combined:
+				if !arr.is_empty():
+					var is_hole = col_poly.is_hole || Geometry2D.is_polygon_clockwise(arr)
+					var c = _generate_collision_polygon(arr, is_hole)
+
+					# Generate the visual for the polygon
+					#  and associate the visual to the collision
+					var v = _add_visual_polygon(arr, is_hole)
+					c.set_meta(META_SHADOW_VISUAL, v)
+
+					if !(is_hole):
+						main_body = c
 	
 	# Reorder the children
 	_reorder_children(self)
@@ -185,7 +203,7 @@ func _generate_poly_queue(_verts: PackedVector2Array, _extent: Rect2):
 
 func _generate_collision_polygon(polygon: PackedVector2Array, is_hole: bool) -> CollisionPolygon2D:
 	var c = CollisionPolygon2D.new()
-	c.build_mode = CollisionPolygon2D.BuildMode.BUILD_SEGMENTS
+	c.build_mode = CollisionPolygon2D.BUILD_SOLIDS if solid else CollisionPolygon2D.BuildMode.BUILD_SEGMENTS
 	c.polygon = polygon
 	add_child(c)
 	
@@ -194,11 +212,6 @@ func _generate_collision_polygon(polygon: PackedVector2Array, is_hole: bool) -> 
 
 	# Determine whether this polygon is a hole
 	c.set_meta(META_SHADOW_HOLE, is_hole)
-
-	# Generate the visual for the polygon
-	#  and associate the visual to the collision
-	var v = _add_visual_polygon(polygon, is_hole)
-	c.set_meta(META_SHADOW_VISUAL, v)
 
 	return c
 

@@ -35,7 +35,7 @@ shadow_body = NodePath("../ShadowBoxes")
 red_cells = 1000
 cyan_cells = 1000
 
-[node name="ShadowBoxes" type="StaticBody2D" parent="." groups=["ShadowBoxes"]]
+[node name="ShadowBoxes" type="StaticBody2D" parent="." groups=["ShadowBodies"]]
 z_index = -10
 z_as_relative = false
 collision_layer = 4
@@ -50,15 +50,6 @@ shape = SubResource("CircleShape2D_aw75m")
 position = Vector2(73, 178)
 shape = SubResource("CircleShape2D_j7rlh")
 disabled = true
-
-[node name="RedLightBoxes" type="Area2D" parent="." groups=["RedLightBoxes"]]
-modulate = Color(0.878431, 0.270588, 0, 1)
-z_index = -10
-script = ExtResource("3_465bv")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RedLightBoxes"]
-position = Vector2(320, 162)
-shape = SubResource("CircleShape2D_aw75m")
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = ExtResource("3_ki0li")
@@ -91,3 +82,20 @@ grow_horizontal = 2
 script = ExtResource("4_rms5m")
 red_cells = 10
 cyan_cells = 10
+
+[node name="RedLight" type="Area2D" parent="." groups=["RedLightBodies"]]
+modulate = Color(0.878431, 0.270588, 0, 1)
+z_index = -10
+collision_layer = 4
+collision_mask = 2
+gravity_space_override = 3
+gravity = 50.0
+linear_damp_space_override = 3
+linear_damp = 5.0
+angular_damp_space_override = 3
+script = ExtResource("3_465bv")
+solid = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedLight"]
+position = Vector2(320, 162)
+shape = SubResource("CircleShape2D_aw75m")
