@@ -164,6 +164,6 @@ func _generate_collision_polygon(polygon: PackedVector2Array, is_hole: bool) -> 
 
 func _reorder_children(n: Node):
 	for c in n.get_children():
-		if c.get_meta(META_SHADOW_HOLE):
+		if c.has_meta(META_SHADOW_HOLE) && c.get_meta(META_SHADOW_HOLE):
 			c.move_to_front()
 	pass
