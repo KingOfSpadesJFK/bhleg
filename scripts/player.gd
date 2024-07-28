@@ -44,6 +44,15 @@ var _flash_angle: float :
 var _flash_markers: Node
 @onready var _camera: Camera2D = $Camera2D
 
+# Stuff for player stuff between frames
+@onready var _prev_pos: Vector2 = position
+@onready var _prev_scale: Vector2 = scale
+@onready var _prev_rot: float = rotation
+@onready var _next_pos: Vector2 = position
+@onready var _next_scale: Vector2 = scale
+@onready var _next_rot: float = rotation
+@onready var _frame_delta: float
+
 signal flash(red_count: int, cyan_count: int)
 
 enum FlashType {
@@ -61,17 +70,26 @@ func _ready():
 
 func _process(_delta):
 	_flash_angle = _calculate_flash_direction(_mouse_position)
-	pass
+
+	position = lerp(position, _next_pos, _delta / _frame_delta)
 
 
 func _physics_process(delta):
+	# Restore next and backup prev
+	position = _next_pos
+	rotation = _next_rot
+	scale    = _next_scale
+	_prev_pos   = position
+	_prev_rot   = rotation
+	_prev_scale = scale
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
 	# Handle terminal velocity
 	if velocity.y > TERMINAL_VELOCITY:
-		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, velocity.y - TERMINAL_VELOCITY)
+		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, 10.0 * delta)
 
 	# Handle jump.
 	if Input.is_action_just_pressed("player_jump") and is_on_floor():
@@ -85,13 +103,22 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, 1000.0 * delta)
 
-	move_and_slide()
-	_update_animation_parameters(delta)
-
 	# Do flash routine 
 	#  MUST BE DONE IN _physics_step()!!!
 	if !(_do_flash == FlashType.NONE || _do_flash == FlashType.CYAN):
 		_flash_light()
+
+	move_and_slide()
+	_update_animation_parameters(delta)
+
+	# Backup next and restore prev
+	_next_pos   = position
+	_next_rot   = rotation
+	_next_scale = scale
+	position = _prev_pos
+	rotation = _prev_rot
+	scale    = _prev_scale
+	_frame_delta = delta
 
 
 # Function for alot of the visual stuff

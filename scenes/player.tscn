@@ -805,7 +805,7 @@ states/squish/position = Vector2(573, -77)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_vhnsr"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "fall", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Walk", "fall", SubResource("AnimationNodeStateMachineTransition_f07b7"), "Idle", "fall", SubResource("AnimationNodeStateMachineTransition_aw7au"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0")]
 graph_offset = Vector2(-104, 37)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 5
 floor_snap_length = 5.0
