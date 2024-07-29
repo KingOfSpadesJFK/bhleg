@@ -117,16 +117,6 @@ func _physics_process(delta):
 
 	move_and_slide()
 	_update_animation_parameters(delta)
-	
-	# Handle red light overlays
-	for b in get_tree().get_nodes_in_group("RedLightBodies"):
-		#print($HitBox.overlaps_area(b))
-		if $HitBox.overlaps_area(b):
-			gravity = b.gravity
-			damp = b.linear_damp
-		else:
-			gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-			damp = 0.0
 
 	# Backup next and restore prev
 	_next_pos   = position

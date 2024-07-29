@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://g6abe0pcjj32"]
+
+[ext_resource type="Script" path="res://levels/light_test.gd" id="1_2s2xj"]
+[ext_resource type="Script" path="res://scripts/light_body.gd" id="1_nojrw"]
+[ext_resource type="Script" path="res://scripts/red_light_body.gd" id="3_6bqlc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_be84a"]
+radius = 120.15
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pk2kl"]
+radius = 42.0
+
+[node name="LightTest" type="Node2D" node_paths=PackedStringArray("_polygon2D", "_shadow_bodies", "_red_light")]
+script = ExtResource("1_2s2xj")
+_polygon2D = NodePath("Polygon2D")
+_shadow_bodies = NodePath("ShadowBoxes")
+_red_light = NodePath("RedLight")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -100
+offset_right = 736.0
+offset_bottom = 456.0
+color = Color(0, 0, 0, 1)
+
+[node name="ShadowBoxes" type="StaticBody2D" parent="." groups=["ShadowBodies"]]
+z_index = -10
+z_as_relative = false
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_nojrw")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ShadowBoxes"]
+position = Vector2(320, 162)
+shape = SubResource("CircleShape2D_be84a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShadowBoxes"]
+position = Vector2(73, 178)
+shape = SubResource("CircleShape2D_pk2kl")
+disabled = true
+
+[node name="RedLight" type="Node2D" parent="." groups=["RedLightBodies"]]
+modulate = Color(0.878431, 0.270588, 0, 1)
+z_index = -10
+script = ExtResource("3_6bqlc")
+solid = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RedLight"]
+position = Vector2(320, 162)
+shape = SubResource("CircleShape2D_be84a")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
+polygon = PackedVector2Array(0, -56, 16, -16, 64, -16, 32, 24, 56, 88, 0, 32, -48, 80, -24, 24, -48, -16, -24, -16)

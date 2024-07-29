@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bb8l5k2fjvhes"]
+[gd_scene load_steps=10 format=3 uid="uid://bb8l5k2fjvhes"]
 
 [ext_resource type="PackedScene" uid="uid://cy4oa4aji2qxu" path="res://scenes/player.tscn" id="2_butpl"]
 [ext_resource type="Script" path="res://scripts/light_body.gd" id="3_465bv"]
@@ -6,12 +6,13 @@
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_oirbf"]
 [ext_resource type="Theme" uid="uid://bk5apwciqslv0" path="res://assets/hud_theme.tres" id="4_4jt35"]
 [ext_resource type="Script" path="res://scripts/cell_container.gd" id="4_rms5m"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_aw75m"]
-radius = 48.0416
+[ext_resource type="Script" path="res://scripts/red_light_body.gd" id="7_pfnnh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j7rlh"]
 radius = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_01vxf"]
+radius = 120.15
 
 [node name="TestLevel" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-204.0]
@@ -42,14 +43,14 @@ collision_layer = 4
 collision_mask = 0
 script = ExtResource("3_465bv")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="ShadowBoxes"]
-position = Vector2(320, 162)
-shape = SubResource("CircleShape2D_aw75m")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShadowBoxes"]
 position = Vector2(73, 178)
 shape = SubResource("CircleShape2D_j7rlh")
 disabled = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="ShadowBoxes"]
+position = Vector2(320, 162)
+shape = SubResource("CircleShape2D_01vxf")
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = ExtResource("3_ki0li")
@@ -83,19 +84,16 @@ script = ExtResource("4_rms5m")
 red_cells = 10
 cyan_cells = 10
 
-[node name="RedLight" type="Area2D" parent="." groups=["RedLightBodies"]]
+[node name="RedLight" type="Node2D" parent="." groups=["RedLightBodies"]]
 modulate = Color(0.878431, 0.270588, 0, 1)
 z_index = -10
+script = ExtResource("7_pfnnh")
+solid = true
+gravity = 200.0
+linear_damp = 5.0
 collision_layer = 4
 collision_mask = 2
-gravity_space_override = 3
-gravity = 50.0
-linear_damp_space_override = 3
-linear_damp = 5.0
-angular_damp_space_override = 3
-script = ExtResource("3_465bv")
-solid = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RedLight"]
 position = Vector2(320, 162)
-shape = SubResource("CircleShape2D_aw75m")
+shape = SubResource("CircleShape2D_01vxf")
