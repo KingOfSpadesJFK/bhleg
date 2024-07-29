@@ -38,7 +38,7 @@ layer_0/tile_data = PackedInt32Array(1048583, 65536, 2, 983047, 65536, 1, 917511
 [node name="Key" parent="." instance=ExtResource("4_gorjn")]
 position = Vector2(152, 40)
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["ShadowBoxes"]]
+[node name="StaticBody2D" type="StaticBody2D" parent="." groups=["ShadowBodies"]]
 z_index = -1
 collision_layer = 4
 collision_mask = 2
