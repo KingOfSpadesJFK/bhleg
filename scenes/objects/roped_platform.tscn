@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://wml1pvsy7kfx"]
+
+[ext_resource type="Texture2D" uid="uid://dwfmb7g7h1i2p" path="res://assets/rope_anchor.png" id="1_bxwjj"]
+[ext_resource type="Script" path="res://scenes/objects/roped_platform.gd" id="1_keimk"]
+[ext_resource type="Script" path="res://scripts/hitbox.gd" id="3_m8sfv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hyakx"]
+radius = 7.07107
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ncm7c"]
+b = Vector2(0, 51)
+
+[node name="RopedPlatform" type="Node2D"]
+script = ExtResource("1_keimk")
+
+[node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
+node_a = NodePath("../Anchor")
+
+[node name="Anchor" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="RopeAnchor" type="Sprite2D" parent="Anchor"]
+position = Vector2(0, -1)
+texture = ExtResource("1_bxwjj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Anchor"]
+shape = SubResource("CircleShape2D_hyakx")
+disabled = true
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("3_m8sfv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("SegmentShape2D_ncm7c")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 1.0
+default_color = Color(0, 0, 0, 1)
+antialiased = true
+
+[connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]
