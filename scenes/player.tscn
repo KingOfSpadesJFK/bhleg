@@ -840,9 +840,6 @@ animation = &"death"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0rca7"]
 animation = &"squish"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vhnsr"]
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7gybw"]
 xfade_time = 0.05
 priority = 2
@@ -907,21 +904,24 @@ advance_condition = &"is_killed"
 advance_mode = 2
 advance_condition = &"is_killed"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_qchsd"]
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_8c2iu"]
 states/Airborne/node = SubResource("AnimationNodeBlendSpace2D_xsw6a")
 states/Airborne/position = Vector2(230, -77)
 states/End/position = Vector2(891, 56)
 states/Idle/node = SubResource("AnimationNodeBlendSpace1D_5wjyr")
 states/Idle/position = Vector2(263, 187)
-states/Start/position = Vector2(79, 134)
+states/Start/position = Vector2(-50, 218)
 states/Walk/node = SubResource("AnimationNodeBlendSpace1D_twde8")
 states/Walk/position = Vector2(526, 195)
 states/death/node = SubResource("AnimationNodeAnimation_5uqmi")
 states/death/position = Vector2(688, 56)
 states/squish/node = SubResource("AnimationNodeAnimation_0rca7")
 states/squish/position = Vector2(573, -77)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_vhnsr"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "death", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0"), "squish", "death", SubResource("AnimationNodeStateMachineTransition_5lr8u"), "Airborne", "death", SubResource("AnimationNodeStateMachineTransition_vbco0"), "Idle", "death", SubResource("AnimationNodeStateMachineTransition_50rjp"), "Walk", "death", SubResource("AnimationNodeStateMachineTransition_a8qmo")]
-graph_offset = Vector2(-117, -85)
+transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "death", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0"), "squish", "death", SubResource("AnimationNodeStateMachineTransition_5lr8u"), "Airborne", "death", SubResource("AnimationNodeStateMachineTransition_vbco0"), "Idle", "death", SubResource("AnimationNodeStateMachineTransition_50rjp"), "Walk", "death", SubResource("AnimationNodeStateMachineTransition_a8qmo"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_qchsd")]
+graph_offset = Vector2(-222, 77)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_eagm6"]
 radius = 9.0

@@ -34,7 +34,7 @@ var direction: float = 1.0
 @onready var _anim_tree: AnimationTree = $Blob/AnimationTree
 @onready var _eyes_sprite: Node2D = $Blob/Eyes/Sprite
 
-var _dying: bool = false
+var _block_player_input: bool = false
 var _blob_dir: float = direction
 var _eyes_angle: float = 0.0
 var _mouse_position: Vector2 = Vector2.ZERO
@@ -58,6 +58,7 @@ var _flash_markers: Node
 @onready var _frame_delta: float
 
 signal flash(red_count: int, cyan_count: int)
+signal death
 
 enum FlashType {
 	NONE,
@@ -74,14 +75,10 @@ func _ready():
 
 func _process(_delta):
 	_flash_angle = _calculate_flash_direction(_mouse_position)
-
 	position = lerp(position, _next_pos, _delta / _frame_delta)
 
 
-func _physics_process(delta):
-	if _dying:
-		return
-	
+func _physics_process(delta):	
 	# Restore next and backup prev
 	position = _next_pos
 	rotation = _next_rot
@@ -108,7 +105,7 @@ func _physics_process(delta):
 
 	# Handle player direction
 	var dir = Input.get_axis("player_left", "player_right")
-	if dir:
+	if !_block_player_input && dir:
 		direction = dir
 		velocity.x = direction * SPEED
 	else:
@@ -242,6 +239,9 @@ func _has_enough_for_cyan() -> bool: return cyan_cells >= 5
 #  Red should be the floaty stuff?
 #  Cyan should be the laser beam?
 func _input(event):
+	if _block_player_input:
+		return
+	
 	# Since there's probs only gonna be one place we'll need this, put it here
 	#  A check to see if we should do the flash or not
 	var _flash_check: Callable = func() -> FlashType:		
@@ -314,9 +314,8 @@ func _calculate_flash_direction(mouse_pos: Vector2):
 	return result
 
 
-
 func _on_hit_box_hit():
-	_dying = true
+	_block_player_input = true
 	_anim_tree.active = false
 	$Blob/AnimationPlayer.play("death")
 	await $Blob/AnimationPlayer.animation_finished
