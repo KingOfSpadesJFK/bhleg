@@ -34,6 +34,7 @@ var direction: float = 1.0
 @onready var _anim_tree: AnimationTree = $Blob/AnimationTree
 @onready var _eyes_sprite: Node2D = $Blob/Eyes/Sprite
 
+var _dying: bool = false
 var _blob_dir: float = direction
 var _eyes_angle: float = 0.0
 var _mouse_position: Vector2 = Vector2.ZERO
@@ -78,6 +79,9 @@ func _process(_delta):
 
 
 func _physics_process(delta):
+	if _dying:
+		return
+	
 	# Restore next and backup prev
 	position = _next_pos
 	rotation = _next_rot
@@ -312,5 +316,10 @@ func _calculate_flash_direction(mouse_pos: Vector2):
 
 
 func _on_hit_box_hit():
-	queue_free()
-	pass # Replace with function body.
+	_dying = true
+	_anim_tree.active = false
+	$Blob/AnimationPlayer.play("death")
+	await $Blob/AnimationPlayer.animation_finished
+	# queue_free()
+	visible = false
+	Bhleg.reload_scene()

@@ -79,4 +79,4 @@ cyan_cells = 10
 
 [node name="Keyhole" parent="." instance=ExtResource("7_gtk0d")]
 position = Vector2(344, 168)
-next_scene = "test_level"
+next_scene = "s2"

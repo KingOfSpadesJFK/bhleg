@@ -20,7 +20,7 @@ var add_to_back: bool = true
 @onready var fade_out_options = SceneManager.create_options(fade_out_speed, fade_out_pattern, fade_out_smoothness, fade_out_inverted)
 @onready var fade_in_options = SceneManager.create_options(fade_in_speed, fade_in_pattern, fade_in_smoothness, fade_in_inverted)
 @onready var general_options = SceneManager.create_general_options(color, timeout, clickable, add_to_back)
-@onready var current_scene: String = SceneManager._current_scene
+var current_scene
 var _spawn_args: Dictionary
 
 func minv(curvec,newvec): return Vector2(min(curvec.x,newvec.x),min(curvec.y,newvec.y))
@@ -29,6 +29,10 @@ func maxv(curvec,newvec): return Vector2(max(curvec.x,newvec.x),max(curvec.y,new
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	# Scene manager stuff
+	SceneManager.load_finished.connect(_change_to_loaded_scene)
+	current_scene = SceneManager._current_scene
 
 
 ### Calculates the bounding box of a polygon
@@ -48,18 +52,22 @@ func calculate_bounding_box(polygon: PackedVector2Array, offset: Vector2=Vector2
 #	scene: Name of the scene you want to change to
 #	args: A dictionary of arguments to pass down
 func change_scene(scene: String, args: Dictionary = {}):
-	# get_tree().paused = true
-	SceneManager.change_scene(scene, fade_out_options, fade_in_options, general_options)
+	SceneManager.set_recorded_scene(scene)
+	SceneManager.change_scene("loading", fade_out_options, fade_in_options, general_options)
 	_spawn_args = args
-	await SceneManager.fade_in_finished
-	# get_tree().paused = false
+	await SceneManager.fade_out_finished
 	current_scene = scene
+	SceneManager.load_scene_interactive(SceneManager.get_recorded_scene())
+
+func _change_to_loaded_scene():
+	SceneManager.change_scene_to_loaded_scene(fade_out_options, fade_in_options, general_options)
 
 
 ### Reloads the current scene.
 ### Relies on the SceneManager addon.
 #	args: A dictionary of arguments to pass down
 func reload_scene(args: Dictionary = {}):
+	current_scene = SceneManager._current_scene
 	change_scene(current_scene, args)
 
 ### Converts a shape to a polygon
