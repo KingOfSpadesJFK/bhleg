@@ -1,9 +1,9 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://cor5gd7ebibg2"]
 
-[ext_resource type="FontFile" uid="uid://bvryxm4dwd610" path="res://assets/fonts/m5x7.ttf" id="1_xp50x"]
+[ext_resource type="FontFile" uid="uid://bvryxm4dwd610" path="res://assets/fonts/m5x7.ttf" id="1_2q7a8"]
 
 [resource]
-default_font = ExtResource("1_xp50x")
+default_font = ExtResource("1_2q7a8")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/colors/font_shadow_color = Color(0, 0, 0, 1)
 Label/constants/outline_size = 4

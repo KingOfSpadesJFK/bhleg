@@ -92,3 +92,8 @@ func convert_shape_to_polygon(shape: Shape2D, samples: int = 20, offset: Vector2
 
 	# Return the polygon
 	return { "polygon": PackedVector2Array(verts), "extent": extent }
+	
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		get_tree().quit() # default behavior

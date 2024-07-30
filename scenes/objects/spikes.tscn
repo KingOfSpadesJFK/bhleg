@@ -20,7 +20,6 @@ collision_mask = 2
 script = ExtResource("1_2dxrs")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_ugb6h")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]

@@ -103,7 +103,7 @@ func _physics_process(delta):
 	
 	# Handle terminal velocity
 	if velocity.y > TERMINAL_VELOCITY - damp * 20.0:
-		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, damp * 10.0 * delta)
+		velocity.y = lerp(velocity.y, TERMINAL_VELOCITY, (10.0 + damp * 10.0) * delta)
 	
 	# Handle damping
 	if damp:
@@ -318,17 +318,26 @@ func _fade_overlay_colors():
 		FlashType.WHITE:
 			light = WHITE_COLOR
 			shade = OVERLAY_SHADOW
+			if !_has_enough_for_white():
+				light.a = 0
+				shade.a = 0
 			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
 			print("Switched to white light")
 		FlashType.RED:
 			light = RED_COLOR
 			shade = OVERLAY_SHADOW
+			if !_has_enough_for_red():
+				light.a = 0
+				shade.a = 0
 			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
 			print("Switiched to red light")
 		FlashType.CYAN:
 			light.a = 0.0
 			shade.a = 0.0
-			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0.5), dur)
+			if _has_enough_for_cyan():
+				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0.5), dur)
+			else:
+				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
 			print("Switched to cyan light")
 
 	_overlay_tween.tween_property($FlashOverlay/RedWhite/Light, "modulate", light, dur)

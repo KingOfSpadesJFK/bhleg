@@ -1,0 +1,281 @@
+[gd_scene load_steps=13 format=3 uid="uid://qwkst4r2ufcl"]
+
+[ext_resource type="Script" path="res://levels/title.gd" id="1_i0tob"]
+[ext_resource type="Texture2D" uid="uid://dcr1tmlxkrasy" path="res://assets/title.png" id="2_reo3a"]
+[ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="2_w4ksn"]
+[ext_resource type="FontFile" uid="uid://c7j55kf1teb7o" path="res://assets/fonts/m3x6.ttf" id="4_wqjw6"]
+
+[sub_resource type="Gradient" id="Gradient_eyj0x"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.1, 0.1, 0.1, 1, 0.2, 0.2, 0.2, 1, 0.3, 0.3, 0.3, 1, 0.4, 0.4, 0.4, 1, 0.5, 0.5, 0.5, 1, 0.6, 0.6, 0.6, 1, 0.7, 0.7, 0.7, 1, 0.8, 0.8, 0.8, 1, 0.9, 0.9, 0.9, 1, 1, 1, 1, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b68i1"]
+gradient = SubResource("Gradient_eyj0x")
+fill_from = Vector2(1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7k0ut"]
+gradient = SubResource("Gradient_eyj0x")
+fill_from = Vector2(1, 0.0299145)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dska2"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.325, 0)
+expand_margin_left = 6.0
+expand_margin_right = 100.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc2dk"]
+skew = Vector2(0.325, 0)
+expand_margin_left = 6.0
+expand_margin_right = 100.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1fw6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3fcg"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.325, 0)
+expand_margin_left = 15.0
+expand_margin_right = 100.0
+
+[sub_resource type="Theme" id="Theme_4gmto"]
+default_font = ExtResource("2_w4ksn")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 4
+Button/styles/focus = SubResource("StyleBoxFlat_dska2")
+Button/styles/hover = SubResource("StyleBoxFlat_oc2dk")
+Button/styles/normal = SubResource("StyleBoxEmpty_p1fw6")
+Button/styles/pressed = SubResource("StyleBoxFlat_g3fcg")
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 4
+Label/constants/shadow_outline_size = 0
+
+[node name="Title" type="Node2D"]
+script = ExtResource("1_i0tob")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = -100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 420.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+
+[node name="Title" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Title"]
+position = Vector2(216, 72)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.5)
+position = Vector2(216, 80)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.375)
+position = Vector2(216, 88)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D4" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.25)
+position = Vector2(216, 96)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D5" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.25)
+position = Vector2(216, 104)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D6" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.125)
+position = Vector2(216, 112)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D7" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.125)
+position = Vector2(216, 120)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="Sprite2D8" type="Sprite2D" parent="Title"]
+modulate = Color(1, 1, 1, 0.125)
+position = Vector2(216, 128)
+scale = Vector2(16, 16)
+texture = ExtResource("2_reo3a")
+
+[node name="BG" type="Node2D" parent="."]
+modulate = Color(0.442911, 0.442911, 0.442911, 1)
+z_index = -3
+position = Vector2(-45, 0)
+
+[node name="TextureRect" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -512.0
+offset_right = 504.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_b68i1")
+
+[node name="TextureRect2" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1360.0
+offset_right = 504.0
+offset_bottom = -928.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7k0ut")
+
+[node name="TextureRect3" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -512.0
+offset_right = 472.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_b68i1")
+
+[node name="TextureRect4" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -1384.0
+offset_right = 472.0
+offset_bottom = -928.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7k0ut")
+
+[node name="TextureRect5" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 104.0
+offset_top = -512.0
+offset_right = 408.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_b68i1")
+
+[node name="TextureRect6" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 104.0
+offset_top = -1400.0
+offset_right = 408.0
+offset_bottom = -928.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7k0ut")
+
+[node name="TextureRect7" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 184.0
+offset_top = -512.0
+offset_right = 328.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_b68i1")
+
+[node name="TextureRect8" type="TextureRect" parent="BG"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 184.0
+offset_top = -1408.0
+offset_right = 328.0
+offset_bottom = -928.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7k0ut")
+
+[node name="ColorRect" type="ColorRect" parent="BG"]
+offset_top = -944.0
+offset_right = 504.0
+offset_bottom = -512.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = SubResource("Theme_4gmto")
+
+[node name="Label" type="Label" parent="CanvasLayer/MainMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 132.0
+grow_vertical = 0
+theme_override_constants/line_spacing = -3
+theme_override_fonts/font = ExtResource("4_wqjw6")
+text = "By the King of Spades (c) MMXXIV
+Built on Godot 4.2"
+
+[node name="BoxContainer" type="BoxContainer" parent="CanvasLayer/MainMenu"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -67.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+vertical = true
+
+[node name="NewGame" type="Button" parent="CanvasLayer/MainMenu/BoxContainer"]
+layout_mode = 2
+text = "Start"
+alignment = 2
+
+[node name="QuitGame" type="Button" parent="CanvasLayer/MainMenu/BoxContainer"]
+layout_mode = 2
+text = "Quit"
+alignment = 2
+
+[connection signal="pressed" from="CanvasLayer/MainMenu/BoxContainer/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/BoxContainer/QuitGame" to="." method="_on_quit_game_pressed"]
