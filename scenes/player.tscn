@@ -932,7 +932,7 @@ radius = 9.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
-collision_mask = 5
+collision_mask = 13
 floor_snap_length = 5.0
 script = ExtResource("1_j74i2")
 
@@ -957,10 +957,60 @@ rotation = 1.57079
 scale = Vector2(111.646, 55.9631)
 mesh = SubResource("PrismMesh_e0qo6")
 
-[node name="Cyan" type="Line2D" parent="FlashOverlay"]
+[node name="Cyan" type="CanvasGroup" parent="FlashOverlay"]
 modulate = Color(1, 1, 1, 0)
+
+[node name="Line2D" type="Line2D" parent="FlashOverlay/Cyan"]
 position = Vector2(-4, 0)
-points = PackedVector2Array(0, 0, 55, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D2" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(1, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D3" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(6, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D4" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(11, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D5" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(16, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D6" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(21, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D7" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(26, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D8" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(31, 0)
+points = PackedVector2Array(13, 0, 16, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
+[node name="Line2D9" type="Line2D" parent="FlashOverlay/Cyan"]
+position = Vector2(36, 0)
+points = PackedVector2Array(13, 0, 16, 0)
 width = 1.0
 default_color = Color(0, 0.788235, 1, 1)
 

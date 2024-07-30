@@ -141,6 +141,7 @@ shape = SubResource("CircleShape2D_01vxf")
 
 [node name="Platform" type="RigidBody2D" parent="."]
 position = Vector2(320, 118)
+collision_mask = 9
 lock_rotation = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cof4vhvwj4f6q"]
+[gd_scene load_steps=10 format=3 uid="uid://cof4vhvwj4f6q"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_tn12p"]
 [ext_resource type="Theme" uid="uid://bk5apwciqslv0" path="res://assets/hud_theme.tres" id="2_00e44"]
@@ -6,6 +6,9 @@
 [ext_resource type="Theme" uid="uid://cor5gd7ebibg2" path="res://assets/ui_theme.tres" id="4_6tle7"]
 [ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="5_07dom"]
 [ext_resource type="Theme" uid="uid://c06x03pckocit" path="res://levels/title.tres" id="6_p43jq"]
+[ext_resource type="Texture2D" uid="uid://bpyylealox6ce" path="res://assets/white_light_icon.png" id="6_qqidy"]
+[ext_resource type="Texture2D" uid="uid://b4ku1agdgrvnk" path="res://assets/red_light_icon.png" id="7_ew5p6"]
+[ext_resource type="Texture2D" uid="uid://kd62fist3cpk" path="res://assets/cyan_light_icon.png" id="8_f6wed"]
 
 [node name="HUDLayer" type="CanvasLayer"]
 process_mode = 3
@@ -53,6 +56,53 @@ text = "ACT 1"
 [node name="LevelName" type="Label" parent="HUD/LevelLabel"]
 layout_mode = 2
 text = " To Shine"
+
+[node name="SelectedFlash" type="Control" parent="HUD"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="HUD/SelectedFlash"]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 18.0
+
+[node name="ColorRect2" type="ColorRect" parent="HUD/SelectedFlash"]
+layout_mode = 0
+offset_left = 190.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 18.0
+color = Color(0.458824, 0.458824, 0.458824, 0.239216)
+
+[node name="FlashTypeContainer" type="BoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -13.0
+offset_top = 9.0
+offset_right = 13.0
+offset_bottom = 17.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="White" type="TextureRect" parent="HUD/FlashTypeContainer"]
+layout_mode = 2
+texture = ExtResource("6_qqidy")
+stretch_mode = 2
+
+[node name="Red" type="TextureRect" parent="HUD/FlashTypeContainer"]
+layout_mode = 2
+texture = ExtResource("7_ew5p6")
+stretch_mode = 2
+
+[node name="Cyan" type="TextureRect" parent="HUD/FlashTypeContainer"]
+layout_mode = 2
+texture = ExtResource("8_f6wed")
+stretch_mode = 2
 
 [node name="Pause" type="Control" parent="."]
 process_mode = 3

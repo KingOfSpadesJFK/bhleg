@@ -26,6 +26,10 @@ func _enter_tree():
 func _ready():
 	if player:
 		player.flash.connect(cell_container._on_player_flash)
+		player.flash.connect(_on_player_flash)
+		player.changed_flash_type.connect(_on_player_changed_flash_type)
+		_on_player_flash(0,0)
+		_on_player_changed_flash_type(player.flash_type)
 	
 	var act_label: Label = level_label.get_child(0)
 	act_label.text = "ACT " + str(level_num)
@@ -37,6 +41,37 @@ func _ready():
 	_level_tween.tween_callback(_hide_level_label)
 	
 	$Pause/Margin.position += Vector2(0,512)
+
+
+func _on_player_flash(_red: int, _cyan: int):
+	var change_mod: Callable = func(node: CanvasItem, color: Color, enough: bool):
+		if enough:
+			node.modulate = color
+		else:
+			node.modulate = Color.html("#28325580")
+			
+	change_mod.call($HUD/FlashTypeContainer/White, Color.WHITE, player._has_enough_for_white())
+	change_mod.call($HUD/FlashTypeContainer/Red,   Color.html("#e04500"), player._has_enough_for_red())
+	change_mod.call($HUD/FlashTypeContainer/Cyan,  Color.html("#00c9ff"), player._has_enough_for_cyan())
+
+
+func _on_player_changed_flash_type(type: Player.FlashType):
+	var pos: Vector2 = $HUD/FlashTypeContainer/White.position
+	match type:
+		Player.FlashType.WHITE:
+			pos = $HUD/FlashTypeContainer/White.position
+			if !player._has_enough_for_white():
+				$HUD/FlashTypeContainer/White.modulate = Color.html("#28325580")
+		Player.FlashType.RED:
+			pos = $HUD/FlashTypeContainer/Red.position
+			if !player._has_enough_for_red():
+				$HUD/FlashTypeContainer/Red.modulate = Color.html("#28325580")
+		Player.FlashType.CYAN:
+			pos = $HUD/FlashTypeContainer/Cyan.position
+			if !player._has_enough_for_cyan():
+				$HUD/FlashTypeContainer/Cyan.modulate = Color.html("#28325580")
+		
+	$HUD/SelectedFlash.position = pos
 
 
 func _hide_level_label():

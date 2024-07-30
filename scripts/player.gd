@@ -68,6 +68,7 @@ var _flash_markers: Node
 @onready var _frame_delta: float
 
 signal flash(red_count: int, cyan_count: int)
+signal changed_flash_type(type: FlashType)
 signal death
 
 enum FlashType {
@@ -301,8 +302,12 @@ func _input(event):
 	if event is InputEventKey:
 		if event.is_action_pressed("player_switch_flash"):
 			_flash_order_index = (_flash_order_index + 1) % _flash_order.size()
-			flash_type = _flash_order[_flash_order_index]	
+			flash_type = _flash_order[_flash_order_index]
+			changed_flash_type.emit(flash_type)
 			if $CooldownTimer.is_stopped():
+				_fade_overlay_colors()
+			else:
+				await $CooldownTimer.timeout
 				_fade_overlay_colors()
 
 
@@ -332,10 +337,11 @@ func _fade_overlay_colors():
 			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
 			print("Switiched to red light")
 		FlashType.CYAN:
+			light = WHITE_COLOR
 			light.a = 0.0
 			shade.a = 0.0
 			if _has_enough_for_cyan():
-				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0.5), dur)
+				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0.75), dur)
 			else:
 				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
 			print("Switched to cyan light")
