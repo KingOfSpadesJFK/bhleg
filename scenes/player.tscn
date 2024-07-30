@@ -1,10 +1,14 @@
-[gd_scene load_steps=51 format=3 uid="uid://cy4oa4aji2qxu"]
+[gd_scene load_steps=53 format=3 uid="uid://cy4oa4aji2qxu"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_j74i2"]
 [ext_resource type="Script" path="res://scripts/hitbox.gd" id="2_wedjy"]
 [ext_resource type="Shader" path="res://shaders/outline.gdshader" id="3_f08xj"]
 [ext_resource type="Texture2D" uid="uid://c35jucfvqwq6b" path="res://assets/circle.png" id="4_60g3m"]
 [ext_resource type="Texture2D" uid="uid://csaqqk3cwb2sa" path="res://assets/eyes_black.png" id="5_qrmuq"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_73utj"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_e0qo6"]
 
 [sub_resource type="SeparationRayShape2D" id="SeparationRayShape2D_516dp"]
 length = 8.0
@@ -932,23 +936,48 @@ collision_mask = 5
 floor_snap_length = 5.0
 script = ExtResource("1_j74i2")
 
+[node name="FlashOverlay" type="Node2D" parent="."]
+z_index = -1
+
+[node name="RedWhite" type="CanvasGroup" parent="FlashOverlay"]
+
+[node name="Light" type="MeshInstance2D" parent="FlashOverlay/RedWhite"]
+modulate = Color(1, 1, 1, 0.368627)
+material = SubResource("CanvasItemMaterial_73utj")
+position = Vector2(23.954, 0.927032)
+rotation = 1.57079
+scale = Vector2(111.646, 55.9631)
+mesh = SubResource("PrismMesh_e0qo6")
+
+[node name="Shadow" type="MeshInstance2D" parent="FlashOverlay/RedWhite"]
+modulate = Color(0.411765, 0.411765, 0.411765, 0.176471)
+material = SubResource("CanvasItemMaterial_73utj")
+position = Vector2(23.954, 0.927032)
+rotation = 1.57079
+scale = Vector2(111.646, 55.9631)
+mesh = SubResource("PrismMesh_e0qo6")
+
+[node name="Cyan" type="Line2D" parent="FlashOverlay"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-4, 0)
+points = PackedVector2Array(0, 0, 55, 0)
+width = 1.0
+default_color = Color(0, 0.788235, 1, 1)
+
 [node name="FlashAnchor" type="Node2D" parent="."]
 
 [node name="FlashHead" type="Marker2D" parent="FlashAnchor"]
 position = Vector2(-4, 0)
 
 [node name="Line2D" type="Line2D" parent="FlashAnchor/FlashHead"]
+visible = false
 rotation = 0.785398
 points = PackedVector2Array(0, 0, 41, 0)
 width = 1.5
 default_color = Color(0.315749, 0.378573, 0.580516, 1)
 
-[node name="Line2D2" type="Line2D" parent="FlashAnchor/FlashHead"]
-points = PackedVector2Array(0, 0, 41, 0)
-width = 1.0
-default_color = Color(0.315749, 0.378573, 0.580516, 1)
-
 [node name="Line2D3" type="Line2D" parent="FlashAnchor/FlashHead"]
+visible = false
 rotation = -0.785398
 points = PackedVector2Array(0, 0, 41, 0)
 width = 1.5
@@ -1016,4 +1045,5 @@ script = ExtResource("2_wedjy")
 shape = SubResource("CircleShape2D_eagm6")
 debug_color = Color(0.854728, 0.32944, 0.435656, 0.42)
 
+[connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
 [connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]

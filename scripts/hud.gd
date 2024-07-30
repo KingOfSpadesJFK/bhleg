@@ -1,16 +1,44 @@
-extends Control
+extends Node
 
-@export var player: Player		# TEMPORARY!!! Use singleton instead
+@export var level_name: String
+@export var level_num: int
+var player: Player
+var cell_container
+@onready var level_label = $HUD/LevelLabel
+
+var _cell_tween: Tween
+var _level_tween: Tween
+@onready var _og_cell_pos: Vector2 = cell_container.position
+@onready var _og_level_pos: Vector2 = level_label.position
 
 
 func _enter_tree():
-	$CellContainer.red_cells = player.red_cells
-	$CellContainer.cyan_cells = player.cyan_cells
+	cell_container = $HUD/CellContainer
+	player = get_tree().get_first_node_in_group("Player")
+	if player:
+		cell_container.red_cells = player.red_cells
+		cell_container.cyan_cells = player.cyan_cells
 
 
 func _ready():
-	player.flash.connect($CellContainer._on_player_flash)
-	pass # Replace with function body.
+	if player:
+		player.flash.connect(cell_container._on_player_flash)
+	
+	var act_label: Label = level_label.get_child(0)
+	act_label.text = "ACT " + str(level_num)
+	var name_label: Label = level_label.get_child(1)
+	name_label.text = level_name
+	level_label.position += Vector2(0, 512)
+	_level_tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC)
+	_level_tween.tween_property(level_label, "position", _og_level_pos, 1)
+	_level_tween.tween_callback(_hide_level_label)
+
+
+func _hide_level_label():
+	await get_tree().create_timer(5).timeout
+	_level_tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC)
+	_level_tween.tween_property(level_label, "position", _og_level_pos + Vector2(0, 512), 1)
+	_level_tween.tween_callback(level_label.queue_free)
 
 
 func _process(_delta):

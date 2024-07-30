@@ -8,7 +8,6 @@ var _red_texture: ColorRect
 var _blue_texture: ColorRect
 var _container: BoxContainer 
 
-
 func _enter_tree():
 	for c in get_children():
 		c.queue_free()

@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://cof4vhvwj4f6q"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_tn12p"]
+[ext_resource type="Theme" uid="uid://bk5apwciqslv0" path="res://assets/hud_theme.tres" id="2_00e44"]
+[ext_resource type="Script" path="res://scripts/cell_container.gd" id="3_rfw71"]
+[ext_resource type="Theme" uid="uid://cor5gd7ebibg2" path="res://assets/ui_theme.tres" id="4_6tle7"]
+[ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="5_07dom"]
+
+[node name="HUDLayer" type="CanvasLayer"]
+script = ExtResource("1_tn12p")
+level_name = "Placeholder name"
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 414.0
+offset_bottom = 236.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_00e44")
+
+[node name="CellContainer" type="Control" parent="HUD"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+script = ExtResource("3_rfw71")
+
+[node name="LevelLabel" type="BoxContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("4_6tle7")
+theme_override_constants/separation = -4
+alignment = 2
+vertical = true
+
+[node name="LevelNum" type="Label" parent="HUD/LevelLabel"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_07dom")
+text = "ACT 1"
+
+[node name="LevelName" type="Label" parent="HUD/LevelLabel"]
+layout_mode = 2
+text = " To Shine"

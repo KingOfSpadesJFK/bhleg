@@ -1,6 +1,10 @@
 extends CharacterBody2D
 class_name Player
 
+const WHITE_COLOR: Color = Color(1, 1, 1, 0.5)
+const RED_COLOR: Color = Color(224.0/255.0, 69.0/255.0, 0.0, 0.5)
+const OVERLAY_SHADOW: Color = Color(.35, .35, .35, .20)
+
 var _laser_beam: PackedScene = preload("res://scenes/objects/laser_beam.tscn")
 
 const SPEED = 150.0
@@ -26,6 +30,11 @@ var flash_type: FlashType = FlashType.WHITE
 var _flash_order_index: int = 0
 var _flash_order: Array[FlashType] = [FlashType.WHITE, FlashType.RED, FlashType.CYAN]
 
+# Which flashes to allow
+@export var allow_white: bool = true
+@export var allow_red: bool = true
+@export var allow_cyan: bool = true
+
 # Which direction the player is walking towards
 var direction: float = 1.0
 
@@ -34,6 +43,7 @@ var direction: float = 1.0
 @onready var _anim_tree: AnimationTree = $Blob/AnimationTree
 @onready var _eyes_sprite: Node2D = $Blob/Eyes/Sprite
 
+var _overlay_tween: Tween
 var _block_player_input: bool = false
 var _blob_dir: float = direction
 var _eyes_angle: float = 0.0
@@ -137,6 +147,7 @@ func _update_animation_parameters(_delta: float):
 	_anim_tree["parameters/conditions/is_grounded"] = is_on_floor()
 
 	_eyes_angle = lerp_angle(_eyes_angle, deg_to_rad(_flash_angle), 15.0 * _delta)
+	$FlashOverlay.rotation = _eyes_angle
 	var normal = Vector2(cos(_eyes_angle), sin(_eyes_angle))
 	_eyes_sprite.position = normal * 3.0 - Vector2(_blob_dir, 0.0)
 
@@ -280,21 +291,48 @@ func _input(event):
 			if _do_flash:
 				_flash_angle = _calculate_flash_direction(_mouse_position)
 				$CooldownTimer.start()
+				$FlashOverlay/RedWhite/Light.modulate.a = 0.0
+				$FlashOverlay/RedWhite/Shadow.modulate.a = 0.0
 	
 	if event is InputEventMouse:
 		_mouse_position = event.position
 	
+	# Handle switching the flash type
 	if event is InputEventKey:
 		if event.is_action_pressed("player_switch_flash"):
 			_flash_order_index = (_flash_order_index + 1) % _flash_order.size()
-			flash_type = _flash_order[_flash_order_index]
-			match flash_type:
-				FlashType.WHITE:
-					print("Switched to white light")
-				FlashType.RED:
-					print("Switiched to red light")
-				FlashType.CYAN:
-					print("Switched to cyan light")
+			flash_type = _flash_order[_flash_order_index]	
+			if $CooldownTimer.is_stopped():
+				_fade_overlay_colors()
+
+
+func _fade_overlay_colors():
+	if _overlay_tween:
+		_overlay_tween.kill()
+	_overlay_tween = get_tree().create_tween()
+	var light = $FlashOverlay/RedWhite/Light.modulate
+	var shade = $FlashOverlay/RedWhite/Shadow.modulate
+	var dur = 0.15
+
+	match flash_type:
+		FlashType.WHITE:
+			light = WHITE_COLOR
+			shade = OVERLAY_SHADOW
+			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
+			print("Switched to white light")
+		FlashType.RED:
+			light = RED_COLOR
+			shade = OVERLAY_SHADOW
+			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
+			print("Switiched to red light")
+		FlashType.CYAN:
+			light.a = 0.0
+			shade.a = 0.0
+			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0.5), dur)
+			print("Switched to cyan light")
+
+	_overlay_tween.tween_property($FlashOverlay/RedWhite/Light, "modulate", light, dur)
+	_overlay_tween.tween_property($FlashOverlay/RedWhite/Shadow, "modulate", shade, dur)
 
 
 func _calculate_flash_direction(mouse_pos: Vector2):
@@ -315,6 +353,7 @@ func _calculate_flash_direction(mouse_pos: Vector2):
 
 
 func _on_hit_box_hit():
+	death.emit()
 	_block_player_input = true
 	_anim_tree.active = false
 	$Blob/AnimationPlayer.play("death")
@@ -322,3 +361,7 @@ func _on_hit_box_hit():
 	# queue_free()
 	visible = false
 	Bhleg.reload_scene()
+
+
+func _on_cooldown_timer_timeout():
+	_fade_overlay_colors()
