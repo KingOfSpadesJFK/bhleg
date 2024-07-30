@@ -1,12 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://cof4vhvwj4f6q"]
+[gd_scene load_steps=7 format=3 uid="uid://cof4vhvwj4f6q"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_tn12p"]
 [ext_resource type="Theme" uid="uid://bk5apwciqslv0" path="res://assets/hud_theme.tres" id="2_00e44"]
 [ext_resource type="Script" path="res://scripts/cell_container.gd" id="3_rfw71"]
 [ext_resource type="Theme" uid="uid://cor5gd7ebibg2" path="res://assets/ui_theme.tres" id="4_6tle7"]
 [ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="5_07dom"]
+[ext_resource type="Theme" uid="uid://c06x03pckocit" path="res://levels/title.tres" id="6_p43jq"]
 
 [node name="HUDLayer" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_tn12p")
 level_name = "Placeholder name"
 
@@ -51,3 +53,67 @@ text = "ACT 1"
 [node name="LevelName" type="Label" parent="HUD/LevelLabel"]
 layout_mode = 2
 text = " To Shine"
+
+[node name="Pause" type="Control" parent="."]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_p43jq")
+
+[node name="Panel" type="Panel" parent="Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="Control" parent="Pause"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = 11.0
+offset_right = -7.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="Pause/Margin"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -38.5
+offset_bottom = 38.5
+grow_horizontal = 0
+grow_vertical = 2
+vertical = true
+
+[node name="Resume" type="Button" parent="Pause/Margin/BoxContainer"]
+layout_mode = 2
+text = "Resume"
+alignment = 2
+
+[node name="Retry" type="Button" parent="Pause/Margin/BoxContainer"]
+layout_mode = 2
+text = "Retry"
+alignment = 2
+
+[node name="Quit" type="Button" parent="Pause/Margin/BoxContainer"]
+layout_mode = 2
+text = "Quit"
+alignment = 2
+
+[connection signal="pressed" from="Pause/Margin/BoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Pause/Margin/BoxContainer/Retry" to="." method="_on_retry_pressed"]
+[connection signal="pressed" from="Pause/Margin/BoxContainer/Quit" to="." method="_on_quit_pressed"]

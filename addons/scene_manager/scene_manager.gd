@@ -78,6 +78,7 @@ func _get_patterns() -> void:
 
 # set current scene and get patterns from `addons/scene_manager/shader_patterns` folder
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process(false)
 	_set_current_scene()
 	_get_patterns()

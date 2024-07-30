@@ -8,8 +8,11 @@ var cell_container
 
 var _cell_tween: Tween
 var _level_tween: Tween
+var _pause_tween: Tween
 @onready var _og_cell_pos: Vector2 = cell_container.position
 @onready var _og_level_pos: Vector2 = level_label.position
+@onready var _og_pause_pos: Vector2 = $Pause/Margin.position
+var _paused: bool = false
 
 
 func _enter_tree():
@@ -32,6 +35,8 @@ func _ready():
 	_level_tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC)
 	_level_tween.tween_property(level_label, "position", _og_level_pos, 1)
 	_level_tween.tween_callback(_hide_level_label)
+	
+	$Pause/Margin.position += Vector2(0,512)
 
 
 func _hide_level_label():
@@ -39,13 +44,44 @@ func _hide_level_label():
 	_level_tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC)
 	_level_tween.tween_property(level_label, "position", _og_level_pos + Vector2(0, 512), 1)
 	_level_tween.tween_callback(level_label.queue_free)
+	
+
+func _input(event):		
+	if event is InputEventKey:
+		if event.is_action_pressed("ui_cancel") && !(_pause_tween && _pause_tween.is_running()):
+			_pause_unpause()
+			
+
+func _pause_unpause():
+	var end_pause: Callable = func():
+		if !_paused:
+			$Pause.visible = false
+		_pause_tween.kill()
+		
+	$Pause.visible = true
+	_pause_tween = get_tree().create_tween().set_trans(Tween.TRANS_CUBIC).set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	if _paused:
+		get_tree().paused = false
+		$Pause/Panel.visible = false
+		_pause_tween.tween_property($Pause/Margin, "position", _og_pause_pos + Vector2(0,512), 0.45)
+	else:
+		get_tree().paused = true
+		$Pause/Panel.visible = true
+		_pause_tween.tween_property($Pause/Margin, "position", _og_pause_pos, .45)
+	_pause_tween.tween_callback(end_pause)
+	_paused = !_paused
 
 
-func _process(_delta):
-	# if player:
-	# 	var cpos = Vector2.ZERO					# Top-left camera position
-	# 	if player.has_node("Camera2D"):
-	# 		cpos = player.get_node("Camera2D").global_position - get_viewport().get_visible_rect().size / 2
-	# 	position = player.position - cpos		# Player position relative to window space
-	# 	pass
-	pass
+func _on_resume_pressed():
+	if !(_pause_tween && _pause_tween.is_running()):
+		_pause_unpause()
+
+
+func _on_retry_pressed():
+	get_tree().paused = false
+	$Pause/Panel.visible = false
+	Bhleg.reload_scene()
+
+
+func _on_quit_pressed():
+	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)

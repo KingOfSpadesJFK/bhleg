@@ -54,8 +54,9 @@ func calculate_bounding_box(polygon: PackedVector2Array, offset: Vector2=Vector2
 func change_scene(scene: String, args: Dictionary = {}):
 	SceneManager.set_recorded_scene(scene)
 	SceneManager.change_scene("loading", fade_out_options, fade_in_options, general_options)
+	await SceneManager.fade_in_finished
 	_spawn_args = args
-	await SceneManager.fade_out_finished
+	await get_tree().create_timer(0.05).timeout
 	current_scene = scene
 	SceneManager.load_scene_interactive(SceneManager.get_recorded_scene())
 

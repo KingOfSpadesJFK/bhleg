@@ -1,0 +1,39 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://c06x03pckocit"]
+
+[ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="1_opogr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dska2"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.325, 0)
+expand_margin_left = 6.0
+expand_margin_right = 100.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc2dk"]
+skew = Vector2(0.325, 0)
+expand_margin_left = 6.0
+expand_margin_right = 100.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1fw6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3fcg"]
+bg_color = Color(1, 1, 1, 1)
+skew = Vector2(0.325, 0)
+expand_margin_left = 15.0
+expand_margin_right = 100.0
+
+[resource]
+default_font = ExtResource("1_opogr")
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/constants/outline_size = 4
+Button/styles/focus = SubResource("StyleBoxFlat_dska2")
+Button/styles/hover = SubResource("StyleBoxFlat_oc2dk")
+Button/styles/normal = SubResource("StyleBoxEmpty_p1fw6")
+Button/styles/pressed = SubResource("StyleBoxFlat_g3fcg")
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 1)
+Label/constants/outline_size = 4
+Label/constants/shadow_outline_size = 0

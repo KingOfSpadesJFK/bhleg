@@ -10,7 +10,7 @@ func _ready():
 func _process(_delta):
 	$BG.position += Vector2(0, 100.0 * _delta)
 	if $BG.position.y >= 2048.0:
-		$BG.position = Vector2(0, 0)
+		$BG.position = Vector2($BG.position.x, 0)
 
 
 func _on_new_game_pressed():

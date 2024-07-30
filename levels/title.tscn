@@ -1,8 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://qwkst4r2ufcl"]
+[gd_scene load_steps=8 format=3 uid="uid://qwkst4r2ufcl"]
 
 [ext_resource type="Script" path="res://levels/title.gd" id="1_i0tob"]
 [ext_resource type="Texture2D" uid="uid://dcr1tmlxkrasy" path="res://assets/title.png" id="2_reo3a"]
-[ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="2_w4ksn"]
+[ext_resource type="Theme" uid="uid://c06x03pckocit" path="res://levels/title.tres" id="3_v3rrf"]
 [ext_resource type="FontFile" uid="uid://c7j55kf1teb7o" path="res://assets/fonts/m3x6.ttf" id="4_wqjw6"]
 
 [sub_resource type="Gradient" id="Gradient_eyj0x"]
@@ -19,42 +19,6 @@ fill_from = Vector2(1, 1)
 gradient = SubResource("Gradient_eyj0x")
 fill_from = Vector2(1, 0.0299145)
 fill_to = Vector2(1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dska2"]
-bg_color = Color(1, 1, 1, 1)
-skew = Vector2(0.325, 0)
-expand_margin_left = 6.0
-expand_margin_right = 100.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oc2dk"]
-skew = Vector2(0.325, 0)
-expand_margin_left = 6.0
-expand_margin_right = 100.0
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1fw6"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g3fcg"]
-bg_color = Color(1, 1, 1, 1)
-skew = Vector2(0.325, 0)
-expand_margin_left = 15.0
-expand_margin_right = 100.0
-
-[sub_resource type="Theme" id="Theme_4gmto"]
-default_font = ExtResource("2_w4ksn")
-Button/colors/font_color = Color(1, 1, 1, 1)
-Button/colors/font_focus_color = Color(1, 1, 1, 1)
-Button/colors/font_hover_color = Color(1, 1, 1, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/constants/outline_size = 4
-Button/styles/focus = SubResource("StyleBoxFlat_dska2")
-Button/styles/hover = SubResource("StyleBoxFlat_oc2dk")
-Button/styles/normal = SubResource("StyleBoxEmpty_p1fw6")
-Button/styles/pressed = SubResource("StyleBoxFlat_g3fcg")
-Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/colors/font_shadow_color = Color(0, 0, 0, 1)
-Label/constants/outline_size = 4
-Label/constants/shadow_outline_size = 0
 
 [node name="Title" type="Node2D"]
 script = ExtResource("1_i0tob")
@@ -239,7 +203,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-theme = SubResource("Theme_4gmto")
+theme = ExtResource("3_v3rrf")
 
 [node name="Label" type="Label" parent="CanvasLayer/MainMenu"]
 layout_mode = 1
