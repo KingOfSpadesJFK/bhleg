@@ -12,12 +12,6 @@
 
 [sub_resource type="PrismMesh" id="PrismMesh_e0qo6"]
 
-[sub_resource type="SeparationRayShape2D" id="SeparationRayShape2D_516dp"]
-length = 8.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_hw20r"]
-radius = 5.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o7k2v"]
 shader = ExtResource("3_f08xj")
 shader_parameter/color = Color(0, 0, 0, 1)
@@ -929,6 +923,12 @@ states/squish/position = Vector2(573, -77)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_7gybw"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_e4kgu"), "death", "End", SubResource("AnimationNodeStateMachineTransition_2h5qp"), "Idle", "Airborne", SubResource("AnimationNodeStateMachineTransition_htqrk"), "Walk", "Airborne", SubResource("AnimationNodeStateMachineTransition_xa1rh"), "Airborne", "squish", SubResource("AnimationNodeStateMachineTransition_vd63h"), "squish", "Walk", SubResource("AnimationNodeStateMachineTransition_3c87r"), "squish", "Airborne", SubResource("AnimationNodeStateMachineTransition_lheyr"), "squish", "Idle", SubResource("AnimationNodeStateMachineTransition_2jww0"), "squish", "death", SubResource("AnimationNodeStateMachineTransition_5lr8u"), "Airborne", "death", SubResource("AnimationNodeStateMachineTransition_vbco0"), "Idle", "death", SubResource("AnimationNodeStateMachineTransition_50rjp"), "Walk", "death", SubResource("AnimationNodeStateMachineTransition_a8qmo"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_qchsd")]
 graph_offset = Vector2(-222, 77)
 
+[sub_resource type="SeparationRayShape2D" id="SeparationRayShape2D_516dp"]
+length = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hw20r"]
+radius = 5.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_eagm6"]
 radius = 9.0
 
@@ -1039,16 +1039,6 @@ default_color = Color(0.315749, 0.378573, 0.580516, 1)
 [node name="BeamPoint" type="Marker2D" parent="FlashAnchor"]
 position = Vector2(10, 0)
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-shape = SubResource("SeparationRayShape2D_516dp")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
-rotation = 3.14159
-shape = SubResource("SeparationRayShape2D_516dp")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_hw20r")
-
 [node name="CooldownTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -1088,6 +1078,16 @@ parameters/conditions/is_moving = false
 parameters/Airborne/blend_position = Vector2(0.000909925, 0.032258)
 parameters/Idle/blend_position = 0.915326
 parameters/Walk/blend_position = 1.04742
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+shape = SubResource("SeparationRayShape2D_516dp")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+rotation = 3.14159
+shape = SubResource("SeparationRayShape2D_516dp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hw20r")
 
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 2

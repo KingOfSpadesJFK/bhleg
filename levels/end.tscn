@@ -1,0 +1,76 @@
+[gd_scene load_steps=6 format=3 uid="uid://bande56nq7jfb"]
+
+[ext_resource type="Theme" uid="uid://cor5gd7ebibg2" path="res://assets/ui_theme.tres" id="1_ojrt6"]
+[ext_resource type="Script" path="res://levels/end.gd" id="2_j331t"]
+[ext_resource type="Theme" uid="uid://c06x03pckocit" path="res://levels/title.tres" id="3_fs80j"]
+[ext_resource type="FontFile" uid="uid://dwyo12uf7oi3f" path="res://assets/fonts/Quit 13.ttf" id="4_pmv54"]
+[ext_resource type="FontFile" uid="uid://c7j55kf1teb7o" path="res://assets/fonts/m3x6.ttf" id="5_kyvdk"]
+
+[node name="End" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ojrt6")
+script = ExtResource("2_j331t")
+
+[node name="Panel" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -116.0
+offset_top = -32.0
+offset_right = -10.0
+offset_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("3_fs80j")
+text = "Take me somewhere else, pls?"
+
+[node name="BoxContainer" type="BoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.5
+offset_top = -59.5
+offset_right = 75.5
+offset_bottom = 59.5
+grow_horizontal = 2
+grow_vertical = 2
+vertical = true
+
+[node name="Label" type="Label" parent="BoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_pmv54")
+text = "The End...?"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="BoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "That's all there is for you. But if you're thirsting for more, leave a review on the itch.io page!"
+autowrap_mode = 2
+
+[node name="Label3" type="Label" parent="BoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_kyvdk")
+text = "Psst... follow kasseroleofsaracha.itch.io!"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
