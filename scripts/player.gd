@@ -55,7 +55,8 @@ var _flash_angle: float :
 		$FlashAnchor.rotation = deg_to_rad(value)
 		pass
 
-var _flash_markers: Node
+var _joystick_aim: Vector2
+var _using_joystick: bool
 @onready var _camera: Camera2D = $Camera2D
 
 # Stuff for player stuff between frames
@@ -85,7 +86,8 @@ func _ready():
 
 
 func _process(_delta):
-	_flash_angle = _calculate_flash_direction(_mouse_position)
+	if !_using_joystick:
+		_flash_angle = _calculate_flash_direction(_mouse_position)
 	position = lerp(position, _next_pos, _delta / _frame_delta)
 
 
@@ -158,74 +160,6 @@ func _update_animation_parameters(_delta: float):
 	_anim_tree["parameters/Idle/blend_position"] = _blob_dir
 	_anim_tree["parameters/Walk/blend_position"] = _blob_dir
 	_anim_tree["parameters/Airborne/blend_position"] = Vector2(_blob_dir, velocity.y / 100.0)
-
-
-# Where the flash of light polygon is made
-# func _flash_light(flash_pos: Vector2, red_light: bool):
-# 	# Debugging markers
-# 	if _flash_markers:
-# 		_flash_markers.queue_free()
-# 	_flash_markers = Node.new()
-# 	add_child(_flash_markers)
-
-# 	# Initialize the new polygon
-# 	var verts: Array[Vector2] = []
-
-# 	# Initialize the raycasting
-# 	var space_state = get_world_2d().direct_space_state
-# 	var step: float = deg_to_rad(FLASH_SPREAD) / FLASH_SAMPLES
-# 	var angle: float = deg_to_rad(_flash_angle + (FLASH_SPREAD / 2.0))
-	
-# 	# Initial starting ray cast
-# 	var mid_pos: Vector2 = Vector2.ZERO
-# 	var start_pos: Vector2 = flash_pos
-# 	var full_length: Vector2 = Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH
-# 	var query = PhysicsRayQueryParameters2D.create(start_pos, flash_pos + full_length)
-# 	query.collision_mask = 1
-# 	var env_result = space_state.intersect_ray(query)
-# 	if env_result:
-# 		mid_pos = env_result.position
-
-# 	# Record previous entries
-# 	var prev_pos = start_pos
-# 	var v = (mid_pos - prev_pos).normalized()
-# 	var prev_dir = atan2(v.y, v.x)
-	
-# 	# Raycast the samples
-# 	angle -= step
-# 	for i in range(FLASH_SAMPLES-1):
-# 		# Raycast
-# 		var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
-# 		query.to = flash_pos + dir * FLASH_RAY_LENGTH
-# 		query.collision_mask = 1					# This first ray query will check for layer 1 (the environment)
-# 		env_result = space_state.intersect_ray(query)
-		
-# 		# Process the result
-# 		if env_result:
-# 			# Check if the points are lined in the same direction
-# 			var _v = (env_result.position - mid_pos).normalized()
-# 			var next_dir = atan2(_v.y, _v.x)
-# 			if next_dir - prev_dir >= PI / 120.0 || next_dir - prev_dir <= -PI / 120.0:
-# 				# Append to the polygon
-# 				verts.append(mid_pos)
-			
-# 			prev_pos = mid_pos
-# 			mid_pos = env_result.position
-# 			prev_dir = next_dir
-
-# 		# Add the step
-# 		angle -= step
-
-# 	# Finalize new polygon
-# 	verts.append(mid_pos)
-# 	verts.append(start_pos)
-# 	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts))
-# 	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
-# 		get_tree().call_group("ShadowBodies", "add_polygon", PackedVector2Array(verts), extent)
-# 		if !red_light:
-# 			get_tree().call_group("RedLightBodies", "subtract_polygon", PackedVector2Array(verts), extent)
-# 		else:
-# 			get_tree().call_group("RedLightBodies", "add_polygon", PackedVector2Array(verts), extent)
 	
 
 func _has_enough_for_white() -> bool: return red_cells >= 1 && cyan_cells >= 1
@@ -269,31 +203,44 @@ func _input(event):
 					return FlashType.NONE	
 		
 		return FlashType.NONE
+	
+	if event is InputEventJoypadMotion:
+		_using_joystick = true
+		var v = Input.get_vector("player_aim_left", "player_aim_right", "player_aim_up", "player_aim_down")
+		if v.length() > 0.75:
+			_flash_angle = snapped(rad_to_deg(atan2(v.y, v.x)), 45.0)
 
-	if event is InputEventMouseButton:
-		_mouse_position = event.position
+	if event is InputEventMouseButton || event is InputEventJoypadMotion:
 		if  is_on_floor() && $CooldownTimer.is_stopped():
 			# Activate... the flash!
+			_using_joystick = event is InputEventJoypadMotion
 			_do_flash = _flash_check.call()
 			if _do_flash:
-				_flash_angle = _calculate_flash_direction(_mouse_position)
+				if !_using_joystick:
+					_mouse_position = event.position
+					_flash_angle = _calculate_flash_direction(_mouse_position)
+				else:
+					var v = Input.get_vector("player_aim_left", "player_aim_right", "player_aim_up", "player_aim_down")
+					if v.length() > 0.75:
+						_flash_angle = snapped(rad_to_deg(atan2(v.y, v.x)), 45.0)
 				$CooldownTimer.start()
 				$FlashOverlay/RedWhite/Light.modulate.a = 0.0
 				$FlashOverlay/RedWhite/Shadow.modulate.a = 0.0
 	
 	if event is InputEventMouse:
+		_using_joystick = false
 		_mouse_position = event.position
 	
 	# Handle switching the flash type
-	if event is InputEventKey:
-		if event.is_action_pressed("player_switch_flash"):
-			_flash_order_index = (_flash_order_index + 1) % _flash_order.size()
-			flash_type = _flash_order[_flash_order_index]
-			changed_flash_type.emit(flash_type)
+	if event is InputEventKey || event is InputEventJoypadButton:
+		if event.is_action_pressed("player_switch_flash") || event.is_action_pressed("player_switch_flash_reverse"):
 			if $CooldownTimer.is_stopped():
-				_fade_overlay_colors()
-			else:
-				await $CooldownTimer.timeout
+				var reverse: bool = event.is_action_pressed("player_switch_flash_reverse") 
+				_flash_order_index = (_flash_order_index + (-1 if reverse else 1)) % _flash_order.size()
+				if _flash_order_index < 0:
+					_flash_order_index += _flash_order.size()
+				flash_type = _flash_order[_flash_order_index]
+				changed_flash_type.emit(flash_type)
 				_fade_overlay_colors()
 
 

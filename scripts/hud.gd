@@ -82,8 +82,8 @@ func _hide_level_label():
 	
 
 func _input(event):		
-	if event is InputEventKey:
-		if event.is_action_pressed("ui_cancel") && !(_pause_tween && _pause_tween.is_running()):
+	if event is InputEventKey || event is InputEventJoypadButton:
+		if event.is_action_pressed("ui_pause") && !(_pause_tween && _pause_tween.is_running()):
 			_pause_unpause()
 			
 
