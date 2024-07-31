@@ -55,7 +55,6 @@ var _flash_angle: float :
 		$FlashAnchor.rotation = deg_to_rad(value)
 		pass
 
-var _joystick_aim: Vector2
 var _using_joystick: bool
 @onready var _camera: Camera2D = $Camera2D
 
@@ -115,6 +114,7 @@ func _physics_process(delta):
 
 	# Handle jump.
 	if Input.is_action_just_pressed("player_jump") and is_on_floor():
+		$JumpSFX.play()
 		velocity.y = JUMP_VELOCITY
 
 	# Handle player direction
@@ -130,6 +130,7 @@ func _physics_process(delta):
 	if !(_do_flash == FlashType.NONE || _do_flash == FlashType.CYAN):
 		_flash_light.flash_light(_do_flash == FlashType.RED)
 		_do_flash = FlashType.NONE
+		$FlashSFX.play()
 
 	move_and_slide()
 	_update_animation_parameters(delta)
@@ -199,6 +200,7 @@ func _input(event):
 						b.position = $FlashAnchor/BeamPoint.global_position
 						b.rotation = deg_to_rad(_flash_angle)
 						add_sibling(b)
+						$LaserbeamSFX.play()
 						return FlashType.NONE
 				_:
 					return FlashType.NONE	
@@ -261,7 +263,7 @@ func _fade_overlay_colors():
 				light.a = 0
 				shade.a = 0
 			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
-			print("Switched to white light")
+			# print("Switched to white light")
 		FlashType.RED:
 			light = RED_COLOR
 			shade = OVERLAY_SHADOW
@@ -269,7 +271,7 @@ func _fade_overlay_colors():
 				light.a = 0
 				shade.a = 0
 			_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
-			print("Switiched to red light")
+			# print("Switiched to red light")
 		FlashType.CYAN:
 			light = WHITE_COLOR
 			light.a = 0.0
@@ -278,7 +280,7 @@ func _fade_overlay_colors():
 				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0.75), dur)
 			else:
 				_overlay_tween.tween_property($FlashOverlay/Cyan, "modulate", Color(1,1,1,0), dur)
-			print("Switched to cyan light")
+			# print("Switched to cyan light")
 
 	_overlay_tween.tween_property($FlashOverlay/RedWhite/Light, "modulate", light, dur)
 	_overlay_tween.tween_property($FlashOverlay/RedWhite/Shadow, "modulate", shade, dur)
@@ -303,6 +305,8 @@ func _calculate_flash_direction(mouse_pos: Vector2):
 
 
 func _on_hit_box_hit():
+	$DeathSFX.play()
+	$HitBox.queue_free()
 	death.emit()
 	_block_player_input = true
 	_anim_tree.active = false

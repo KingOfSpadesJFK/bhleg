@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cof4vhvwj4f6q"]
+[gd_scene load_steps=11 format=3 uid="uid://cof4vhvwj4f6q"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_tn12p"]
 [ext_resource type="Theme" uid="uid://bk5apwciqslv0" path="res://assets/hud_theme.tres" id="2_00e44"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bpyylealox6ce" path="res://assets/white_light_icon.png" id="6_qqidy"]
 [ext_resource type="Texture2D" uid="uid://b4ku1agdgrvnk" path="res://assets/red_light_icon.png" id="7_ew5p6"]
 [ext_resource type="Texture2D" uid="uid://kd62fist3cpk" path="res://assets/cyan_light_icon.png" id="8_f6wed"]
+[ext_resource type="FontFile" uid="uid://bvryxm4dwd610" path="res://assets/fonts/m5x7.ttf" id="10_vlbwr"]
 
 [node name="HUDLayer" type="CanvasLayer"]
 process_mode = 3
@@ -160,6 +161,20 @@ offset_right = -7.0
 offset_bottom = -11.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="FlashLabel" type="Label" parent="Pause/Margin"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -171.0
+offset_top = -13.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("10_vlbwr")
+text = "Press F1 to disable flash effect (enabled)"
 
 [node name="BoxContainer" type="BoxContainer" parent="Pause/Margin"]
 layout_mode = 1

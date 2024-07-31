@@ -7,3 +7,4 @@ func _ready():
 
 func _on_button_pressed():
 	Bhleg.change_scene("s1")
+	GlobalMusicPlayer.load_track("Bhleg")

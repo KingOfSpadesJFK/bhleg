@@ -26,6 +26,7 @@ var _spawn_args: Dictionary
 func minv(curvec,newvec): return Vector2(min(curvec.x,newvec.x),min(curvec.y,newvec.y))
 func maxv(curvec,newvec): return Vector2(max(curvec.x,newvec.x),max(curvec.y,newvec.y))
 
+var disable_flash_effect: bool = false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS

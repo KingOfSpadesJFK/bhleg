@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://ckcyg1axbshy1"]
+[gd_scene load_steps=15 format=3 uid="uid://ckcyg1axbshy1"]
 
 [ext_resource type="Script" path="res://scenes/objects/key.gd" id="1_60yud"]
 [ext_resource type="Texture2D" uid="uid://c35jucfvqwq6b" path="res://assets/circle.png" id="2_0hffx"]
 [ext_resource type="Shader" path="res://shaders/shiny_outline.gdshader" id="2_7haop"]
 [ext_resource type="Script" path="res://scripts/collectible.gd" id="3_psnef"]
+[ext_resource type="AudioStream" uid="uid://bpuj0ufnuryqf" path="res://assets/chest.wav" id="5_jnxyv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yaeyj"]
 shader = ExtResource("2_7haop")
@@ -153,6 +154,9 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collectible/Area2D"]
 shape = SubResource("CircleShape2D_08y6v")
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_jnxyv")
 
 [connection signal="collected" from="Collectible" to="." method="_on_collectible_collected"]
 [connection signal="body_entered" from="Collectible/Area2D" to="Collectible" method="_on_area_2d_body_entered"]

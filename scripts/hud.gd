@@ -40,6 +40,7 @@ func _ready():
 	_level_tween.tween_callback(_hide_level_label)
 	
 	$Pause/Margin.position += Vector2(0,512)
+	$Pause/Margin/FlashLabel.text = "Press F1 to disable flash effect " + ("(enabled)"  if !Bhleg.disable_flash_effect else "(disabled)")
 
 
 func _on_player_flash(_red: int, _cyan: int):
@@ -54,16 +55,18 @@ func _on_player_flash(_red: int, _cyan: int):
 	change_mod.call($HUD/FlashTypeContainer/Cyan,  Color.html("#00c9ff"), player._has_enough_for_cyan())
 
 	# Flash
+	if Bhleg.disable_flash_effect:
+		return
 	if _flash_tween:
 		_flash_tween.kill()
 	if (_red && _cyan):
-		$Flash/White.color = Color(1,1,1,.5)
+		$Flash/White.color = Color(1,1,1,1)
 		$Flash/Shade.color = Color(0,0,0,.25)
 		_flash_tween = get_tree().create_tween()
 		_flash_tween.tween_property($Flash/White, "color", Color(1,1,1,0), 1)
 		_flash_tween.tween_property($Flash/Shade, "color", Color(0,0,0,0), 1)
 	elif _red && !_cyan:
-		$Flash/White.color = Color.html("#e0450080")
+		$Flash/White.color = Color.html("#e04500")
 		$Flash/Shade.color = Color(0,0,0,.25)
 		_flash_tween = get_tree().create_tween()
 		_flash_tween.tween_property($Flash/White, "color", Color.html("#e0450000"), 1)
@@ -101,6 +104,10 @@ func _input(event):
 	if event is InputEventKey || event is InputEventJoypadButton:
 		if event.is_action_pressed("ui_pause") && !(_pause_tween && _pause_tween.is_running()):
 			_pause_unpause()
+		
+		if event.is_action_pressed("ui_toggle_flash"):
+			Bhleg.disable_flash_effect = !Bhleg.disable_flash_effect
+			$Pause/Margin/FlashLabel.text = "Press F1 to disable flash effect " + ("(enabled)"  if !Bhleg.disable_flash_effect else "(disabled)")
 			
 
 func _pause_unpause():

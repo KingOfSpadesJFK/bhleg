@@ -18,6 +18,7 @@ func _ready():
 func _physics_process(_delta):
 	if hit:
 		$FlashLight.flash_light(type == 1)
+		$FlashSFX.play()
 		hit = false
 
 
@@ -27,5 +28,6 @@ func _on_hit_box_hit():
 		b.position = $BeamPoint.global_position
 		b.rotation = global_rotation
 		add_sibling(b)
+		$LaserbeamSFX.play()
 	else:
 		hit = true

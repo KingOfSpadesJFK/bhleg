@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://cy4oa4aji2qxu"]
+[gd_scene load_steps=58 format=3 uid="uid://cy4oa4aji2qxu"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_j74i2"]
 [ext_resource type="Script" path="res://scripts/flash_light.gd" id="2_relay"]
@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://c35jucfvqwq6b" path="res://assets/circle.png" id="4_60g3m"]
 [ext_resource type="Texture2D" uid="uid://csaqqk3cwb2sa" path="res://assets/eyes_black.png" id="5_qrmuq"]
 [ext_resource type="AudioStream" uid="uid://c4ubbyxxxsfd6" path="res://assets/flash.wav" id="7_wnpvy"]
+[ext_resource type="AudioStream" uid="uid://k2j45h475821" path="res://assets/jump.wav" id="8_8bduu"]
+[ext_resource type="AudioStream" uid="uid://dokwrm55u36ep" path="res://assets/power_up.wav" id="9_8uios"]
+[ext_resource type="AudioStream" uid="uid://qfjxdno0m2jc" path="res://assets/death.wav" id="10_833w2"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_73utj"]
 
@@ -1098,8 +1101,17 @@ script = ExtResource("2_wedjy")
 shape = SubResource("CircleShape2D_eagm6")
 debug_color = Color(0.854728, 0.32944, 0.435656, 0.42)
 
-[node name="FlashSound" type="AudioStreamPlayer2D" parent="."]
+[node name="FlashSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_wnpvy")
+
+[node name="JumpSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_8bduu")
+
+[node name="LaserbeamSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_8uios")
+
+[node name="DeathSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_833w2")
 
 [connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
 [connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]

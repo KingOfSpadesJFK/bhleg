@@ -60,7 +60,7 @@ cyan_cells = 20
 
 [node name="Keyhole" parent="." instance=ExtResource("5_2wb5o")]
 position = Vector2(88, 176)
-next_scene = "test_level"
+next_scene = "end"
 
 [node name="Key" parent="." instance=ExtResource("6_13gcb")]
 position = Vector2(344, 488)

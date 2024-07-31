@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://csp30sbkxkp0e"]
+[gd_scene load_steps=10 format=3 uid="uid://csp30sbkxkp0e"]
 
 [ext_resource type="Script" path="res://scenes/objects/light_box.gd" id="1_0ubnq"]
 [ext_resource type="Texture2D" uid="uid://bq2yu7od31kd0" path="res://assets/lightbox.png" id="1_cssu3"]
 [ext_resource type="Texture2D" uid="uid://bpe8mexdlymjv" path="res://assets/lightbox_overlay.png" id="2_iaicr"]
 [ext_resource type="Script" path="res://scripts/hitbox.gd" id="3_qbspv"]
 [ext_resource type="Script" path="res://scripts/flash_light.gd" id="5_tl674"]
+[ext_resource type="AudioStream" uid="uid://c4ubbyxxxsfd6" path="res://assets/flash.wav" id="6_4mgtc"]
+[ext_resource type="AudioStream" uid="uid://dokwrm55u36ep" path="res://assets/power_up.wav" id="7_vvkmj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_66jj8"]
 size = Vector2(16, 16)
@@ -37,5 +39,11 @@ texture = ExtResource("2_iaicr")
 
 [node name="BeamPoint" type="Marker2D" parent="."]
 position = Vector2(8, 0)
+
+[node name="FlashSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_4mgtc")
+
+[node name="LaserbeamSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_vvkmj")
 
 [connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]
