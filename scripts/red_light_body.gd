@@ -53,24 +53,23 @@ func _enter_tree():
 			c.set_meta(META_SHADOW_VISUAL, p)
 		
 		elif c is CollisionShape2D:
-			if c.shape is CircleShape2D:
-				c.queue_free()
+			c.queue_free()
 
-				# Convert the circle into a polygon
-				var shape_poly: Dictionary = Bhleg.convert_shape_to_polygon(c.shape, 20,  c.global_position)
+			# Convert the shape into a polygon
+			var shape_poly: Dictionary = Bhleg.convert_shape_to_polygon(c.shape, 20,  c.global_position)
 
-				# Create the new polygon
-				var col: CollisionPolygon2D = CollisionPolygon2D.new()
-				col.build_mode = CollisionPolygon2D.BUILD_SEGMENTS
-				col.polygon = shape_poly.polygon
-				_body_area.add_child(col)
+			# Create the new polygon
+			var col: CollisionPolygon2D = CollisionPolygon2D.new()
+			col.build_mode = CollisionPolygon2D.BUILD_SEGMENTS
+			col.polygon = shape_poly.polygon
+			_body_area.add_child(col)
 
-				var extent = shape_poly.extent
-				col.set_meta(META_SHADOW_EXTENT, extent)
-				col.set_meta(META_SHADOW_HOLE, false)
+			var extent = shape_poly.extent
+			col.set_meta(META_SHADOW_EXTENT, extent)
+			col.set_meta(META_SHADOW_HOLE, false)
 
-				var p = _add_visual_polygon(shape_poly.polygon)
-				col.set_meta(META_SHADOW_VISUAL, p)
+			var p = _add_visual_polygon(shape_poly.polygon)
+			col.set_meta(META_SHADOW_VISUAL, p)
 	
 	# Add each children to the scene tree
 	add_child(_visual_group)

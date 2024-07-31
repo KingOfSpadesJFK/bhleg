@@ -68,7 +68,7 @@ collision_mask = 2
 
 [node name="Keyhole" parent="." instance=ExtResource("5_wwjks")]
 position = Vector2(344, 112)
-next_scene = "test_level"
+next_scene = "s6"
 
 [node name="Key" parent="." instance=ExtResource("6_tx2a1")]
 position = Vector2(312, 280)

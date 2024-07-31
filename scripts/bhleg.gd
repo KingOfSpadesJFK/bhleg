@@ -90,6 +90,14 @@ func convert_shape_to_polygon(shape: Shape2D, samples: int = 20, offset: Vector2
 
 		extent.position = offset - Vector2(r,r)
 		extent.size = Vector2(r,r) * 2.0
+	elif shape is RectangleShape2D:
+		var half_size = shape.size / 2
+		verts.append(offset + Vector2(-half_size.x, -half_size.y))
+		verts.append(offset + Vector2(half_size.x, -half_size.y))
+		verts.append(offset + Vector2(half_size.x, half_size.y))
+		verts.append(offset + Vector2(-half_size.x, half_size.y))
+		extent.position = offset - half_size
+		extent.size = shape.size
 
 	# Return the polygon
 	return { "polygon": PackedVector2Array(verts), "extent": extent }

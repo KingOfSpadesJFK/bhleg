@@ -352,10 +352,11 @@ func _fade_overlay_colors():
 
 func _calculate_flash_direction(mouse_pos: Vector2):
 	var result: float = 0
-	var cpos = Vector2.ZERO					# Top-left camera position
+	var cpos = get_viewport().get_visible_rect().size / 2	# Center camera position
 	if _camera:
-		cpos = _camera.global_position - get_viewport().get_visible_rect().size / 2
-	var epos = cpos + mouse_pos		# Event position relative to world space
+		cpos = _camera.global_position
+	mouse_pos -= get_viewport().get_visible_rect().size / 2
+	var epos = cpos + (mouse_pos)								# Event position relative to world space
 	var n = (epos - global_position).normalized()
 	if n.is_zero_approx():
 		result = 0.0
