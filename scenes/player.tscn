@@ -1,6 +1,7 @@
-[gd_scene load_steps=53 format=3 uid="uid://cy4oa4aji2qxu"]
+[gd_scene load_steps=54 format=3 uid="uid://cy4oa4aji2qxu"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_j74i2"]
+[ext_resource type="Script" path="res://scripts/flash_light.gd" id="2_relay"]
 [ext_resource type="Script" path="res://scripts/hitbox.gd" id="2_wedjy"]
 [ext_resource type="Shader" path="res://shaders/outline.gdshader" id="3_f08xj"]
 [ext_resource type="Texture2D" uid="uid://c35jucfvqwq6b" path="res://assets/circle.png" id="4_60g3m"]
@@ -1016,17 +1017,18 @@ default_color = Color(0, 0.788235, 1, 1)
 
 [node name="FlashAnchor" type="Node2D" parent="."]
 
-[node name="FlashHead" type="Marker2D" parent="FlashAnchor"]
+[node name="FlashLight" type="Node2D" parent="FlashAnchor"]
 position = Vector2(-4, 0)
+script = ExtResource("2_relay")
 
-[node name="Line2D" type="Line2D" parent="FlashAnchor/FlashHead"]
+[node name="Line2D" type="Line2D" parent="FlashAnchor/FlashLight"]
 visible = false
 rotation = 0.785398
 points = PackedVector2Array(0, 0, 41, 0)
 width = 1.5
 default_color = Color(0.315749, 0.378573, 0.580516, 1)
 
-[node name="Line2D3" type="Line2D" parent="FlashAnchor/FlashHead"]
+[node name="Line2D3" type="Line2D" parent="FlashAnchor/FlashLight"]
 visible = false
 rotation = -0.785398
 points = PackedVector2Array(0, 0, 41, 0)

@@ -39,7 +39,7 @@ var _flash_order: Array[FlashType] = [FlashType.WHITE, FlashType.RED, FlashType.
 var direction: float = 1.0
 
 # Necessary nodes
-@onready var _flash_point: Node2D = $FlashAnchor/FlashHead
+@onready var _flash_light: FlashLight = $FlashAnchor/FlashLight
 @onready var _anim_tree: AnimationTree = $Blob/AnimationTree
 @onready var _eyes_sprite: Node2D = $Blob/Eyes/Sprite
 
@@ -125,7 +125,8 @@ func _physics_process(delta):
 	# Do flash routine 
 	#  MUST BE DONE IN _physics_step()!!!
 	if !(_do_flash == FlashType.NONE || _do_flash == FlashType.CYAN):
-		_flash_light()
+		_flash_light.flash_light(_do_flash == FlashType.RED)
+		_do_flash = FlashType.NONE
 
 	move_and_slide()
 	_update_animation_parameters(delta)
@@ -160,86 +161,71 @@ func _update_animation_parameters(_delta: float):
 
 
 # Where the flash of light polygon is made
-func _flash_light():
-	# Debugging markers
-	if _flash_markers:
-		_flash_markers.queue_free()
-	_flash_markers = Node.new()
-	add_child(_flash_markers)
+# func _flash_light(flash_pos: Vector2, red_light: bool):
+# 	# Debugging markers
+# 	if _flash_markers:
+# 		_flash_markers.queue_free()
+# 	_flash_markers = Node.new()
+# 	add_child(_flash_markers)
 
-	# Initialize the new polygon
-	var verts: Array[Vector2] = []
+# 	# Initialize the new polygon
+# 	var verts: Array[Vector2] = []
 
-	# Initialize the raycasting
-	var space_state = get_world_2d().direct_space_state
-	var step: float = deg_to_rad(FLASH_SPREAD) / FLASH_SAMPLES
-	var angle: float = deg_to_rad(_flash_angle + (FLASH_SPREAD / 2.0))
+# 	# Initialize the raycasting
+# 	var space_state = get_world_2d().direct_space_state
+# 	var step: float = deg_to_rad(FLASH_SPREAD) / FLASH_SAMPLES
+# 	var angle: float = deg_to_rad(_flash_angle + (FLASH_SPREAD / 2.0))
 	
-	# Initial starting ray cast
-	var mid_pos: Vector2 = Vector2.ZERO
-	var start_pos: Vector2 = _flash_point.global_position
-	var full_length: Vector2 = Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH
-	var query = PhysicsRayQueryParameters2D.create(start_pos, _flash_point.global_position + full_length)
-	query.collision_mask = 1
-	var env_result = space_state.intersect_ray(query)
-	if env_result:
-		mid_pos = env_result.position
+# 	# Initial starting ray cast
+# 	var mid_pos: Vector2 = Vector2.ZERO
+# 	var start_pos: Vector2 = flash_pos
+# 	var full_length: Vector2 = Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH
+# 	var query = PhysicsRayQueryParameters2D.create(start_pos, flash_pos + full_length)
+# 	query.collision_mask = 1
+# 	var env_result = space_state.intersect_ray(query)
+# 	if env_result:
+# 		mid_pos = env_result.position
 
-	# Record previous entries
-	var prev_pos = start_pos
-	var v = (mid_pos - prev_pos).normalized()
-	var prev_dir = atan2(v.y, v.x)
+# 	# Record previous entries
+# 	var prev_pos = start_pos
+# 	var v = (mid_pos - prev_pos).normalized()
+# 	var prev_dir = atan2(v.y, v.x)
 	
-	# Raycast the samples
-	angle -= step
-	for i in range(FLASH_SAMPLES-1):
-		# Raycast
-		var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
-		query.to = _flash_point.global_position + dir * FLASH_RAY_LENGTH
-		query.collision_mask = 1					# This first ray query will check for layer 1 (the environment)
-		env_result = space_state.intersect_ray(query)
+# 	# Raycast the samples
+# 	angle -= step
+# 	for i in range(FLASH_SAMPLES-1):
+# 		# Raycast
+# 		var dir = Vector2(cos(angle), sin(angle))	# Convert the current angle to a normal vector
+# 		query.to = flash_pos + dir * FLASH_RAY_LENGTH
+# 		query.collision_mask = 1					# This first ray query will check for layer 1 (the environment)
+# 		env_result = space_state.intersect_ray(query)
 		
-		# Process the result
-		if env_result:
-			# Check if the points are lined in the same direction
-			var _v = (env_result.position - mid_pos).normalized()
-			var next_dir = atan2(_v.y, _v.x)
-			if next_dir - prev_dir >= PI / 120.0 || next_dir - prev_dir <= -PI / 120.0:
-				# Append to the polygon
-				verts.append(mid_pos)
+# 		# Process the result
+# 		if env_result:
+# 			# Check if the points are lined in the same direction
+# 			var _v = (env_result.position - mid_pos).normalized()
+# 			var next_dir = atan2(_v.y, _v.x)
+# 			if next_dir - prev_dir >= PI / 120.0 || next_dir - prev_dir <= -PI / 120.0:
+# 				# Append to the polygon
+# 				verts.append(mid_pos)
 			
-			prev_pos = mid_pos
-			mid_pos = env_result.position
-			prev_dir = next_dir
+# 			prev_pos = mid_pos
+# 			mid_pos = env_result.position
+# 			prev_dir = next_dir
 
-		# Add the step
-		angle -= step
+# 		# Add the step
+# 		angle -= step
 
-	# Finalize new polygon
-	verts.append(mid_pos)
-	verts.append(start_pos)
-	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts))
-	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
-		get_tree().call_group("ShadowBodies", "add_polygon", PackedVector2Array(verts), extent)
-		# shadow_body.add_polygon(PackedVector2Array(verts), extent)
-		match _do_flash:
-			FlashType.WHITE:
-				get_tree().call_group("RedLightBodies", "subtract_polygon", PackedVector2Array(verts), extent)
-			FlashType.RED:
-				get_tree().call_group("RedLightBodies", "add_polygon", PackedVector2Array(verts), extent)
-
-
-	# Create the debug markers
-	#for _v in verts:
-	#	# Create the debug marker
-	#	var sp = Sprite2D.new()
-	#	var t = PlaceholderTexture2D.new()
-	#	t.size = Vector2(5,5)
-	#	sp.texture = t
-	#	sp.position = _v
-	#	_flash_markers.add_child(sp)
-	
-	_do_flash = FlashType.NONE
+# 	# Finalize new polygon
+# 	verts.append(mid_pos)
+# 	verts.append(start_pos)
+# 	var extent = Bhleg.calculate_bounding_box(PackedVector2Array(verts))
+# 	if Geometry2D.is_polygon_clockwise(PackedVector2Array(verts)):
+# 		get_tree().call_group("ShadowBodies", "add_polygon", PackedVector2Array(verts), extent)
+# 		if !red_light:
+# 			get_tree().call_group("RedLightBodies", "subtract_polygon", PackedVector2Array(verts), extent)
+# 		else:
+# 			get_tree().call_group("RedLightBodies", "add_polygon", PackedVector2Array(verts), extent)
 	
 
 func _has_enough_for_white() -> bool: return red_cells >= 1 && cyan_cells >= 1
