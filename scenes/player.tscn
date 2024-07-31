@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://cy4oa4aji2qxu"]
+[gd_scene load_steps=55 format=3 uid="uid://cy4oa4aji2qxu"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_j74i2"]
 [ext_resource type="Script" path="res://scripts/flash_light.gd" id="2_relay"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://shaders/outline.gdshader" id="3_f08xj"]
 [ext_resource type="Texture2D" uid="uid://c35jucfvqwq6b" path="res://assets/circle.png" id="4_60g3m"]
 [ext_resource type="Texture2D" uid="uid://csaqqk3cwb2sa" path="res://assets/eyes_black.png" id="5_qrmuq"]
+[ext_resource type="AudioStream" uid="uid://c4ubbyxxxsfd6" path="res://assets/flash.wav" id="7_wnpvy"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_73utj"]
 
@@ -1096,6 +1097,9 @@ script = ExtResource("2_wedjy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 shape = SubResource("CircleShape2D_eagm6")
 debug_color = Color(0.854728, 0.32944, 0.435656, 0.42)
+
+[node name="FlashSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_wnpvy")
 
 [connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
 [connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]

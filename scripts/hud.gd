@@ -6,10 +6,9 @@ var player: Player
 var cell_container
 @onready var level_label = $HUD/LevelLabel
 
-var _cell_tween: Tween
+var _flash_tween: Tween
 var _level_tween: Tween
 var _pause_tween: Tween
-@onready var _og_cell_pos: Vector2 = cell_container.position
 @onready var _og_level_pos: Vector2 = level_label.position
 @onready var _og_pause_pos: Vector2 = $Pause/Margin.position
 var _paused: bool = false
@@ -53,6 +52,23 @@ func _on_player_flash(_red: int, _cyan: int):
 	change_mod.call($HUD/FlashTypeContainer/White, Color.WHITE, player._has_enough_for_white())
 	change_mod.call($HUD/FlashTypeContainer/Red,   Color.html("#e04500"), player._has_enough_for_red())
 	change_mod.call($HUD/FlashTypeContainer/Cyan,  Color.html("#00c9ff"), player._has_enough_for_cyan())
+
+	# Flash
+	if _flash_tween:
+		_flash_tween.kill()
+	if (_red && _cyan):
+		$Flash/White.color = Color(1,1,1,.5)
+		$Flash/Shade.color = Color(0,0,0,.25)
+		_flash_tween = get_tree().create_tween()
+		_flash_tween.tween_property($Flash/White, "color", Color(1,1,1,0), 1)
+		_flash_tween.tween_property($Flash/Shade, "color", Color(0,0,0,0), 1)
+	elif _red && !_cyan:
+		$Flash/White.color = Color.html("#e0450080")
+		$Flash/Shade.color = Color(0,0,0,.25)
+		_flash_tween = get_tree().create_tween()
+		_flash_tween.tween_property($Flash/White, "color", Color.html("#e0450000"), 1)
+		_flash_tween.tween_property($Flash/Shade, "color", Color(0,0,0,0), 1)
+
 
 
 func _on_player_changed_flash_type(type: Player.FlashType):
