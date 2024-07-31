@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://csp30sbkxkp0e"]
+
+[ext_resource type="Script" path="res://scenes/objects/light_box.gd" id="1_0ubnq"]
+[ext_resource type="Texture2D" uid="uid://bq2yu7od31kd0" path="res://assets/lightbox.png" id="1_cssu3"]
+[ext_resource type="Texture2D" uid="uid://bpe8mexdlymjv" path="res://assets/lightbox_overlay.png" id="2_iaicr"]
+[ext_resource type="Script" path="res://scripts/hitbox.gd" id="3_qbspv"]
+[ext_resource type="Script" path="res://scripts/flash_light.gd" id="5_tl674"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66jj8"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vxd0g"]
+
+[node name="LightBox" type="Node2D"]
+script = ExtResource("1_0ubnq")
+
+[node name="FlashLight" type="Node2D" parent="." node_paths=PackedStringArray("exclusions")]
+script = ExtResource("5_tl674")
+exclusions = [NodePath("../StaticBody2D")]
+
+[node name="Block" type="Sprite2D" parent="."]
+texture = ExtResource("1_cssu3")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("RectangleShape2D_66jj8")
+
+[node name="HitBox" type="Area2D" parent="."]
+script = ExtResource("3_qbspv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("RectangleShape2D_vxd0g")
+
+[node name="Overlay" type="Sprite2D" parent="."]
+texture = ExtResource("2_iaicr")
+
+[node name="BeamPoint" type="Marker2D" parent="."]
+position = Vector2(8, 0)
+
+[connection signal="hit" from="HitBox" to="." method="_on_hit_box_hit"]

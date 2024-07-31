@@ -5,7 +5,7 @@ const FLASH_RAY_LENGTH = 1000.0
 const FLASH_SPREAD = 90.0			# How wide the area of flash should be (in degrees)
 const FLASH_SAMPLES = 200
 
-@export var exclusions: Array = []
+@export var exclusions: Array[Node2D] = []
 
 
 func add_exclusion(exclude: Node2D):
@@ -33,7 +33,7 @@ func flash_light(red_light: bool):
 	var start_pos: Vector2 = global_position
 	var full_length: Vector2 = Vector2(cos(angle), sin(angle)) * FLASH_RAY_LENGTH
 	var query = PhysicsRayQueryParameters2D.create(start_pos, global_position + full_length)
-	query.exclude = exclusions
+	#query.exclude = exclusions
 	query.collision_mask = 1
 	var env_result = space_state.intersect_ray(query)
 	if env_result:
