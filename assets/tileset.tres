@@ -1,8 +1,10 @@
-[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://du3n7xwnm051j"]
+[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://du3n7xwnm051j"]
 
 [ext_resource type="Texture2D" uid="uid://ctixb2big5re5" path="res://assets/tileset.png" id="1_fijjp"]
 [ext_resource type="PackedScene" uid="uid://djt63r0btsgi6" path="res://scenes/objects/spikes.tscn" id="2_p0qdt"]
-[ext_resource type="PackedScene" uid="uid://csp30sbkxkp0e" path="res://scenes/objects/light_box.tscn" id="3_arjpf"]
+[ext_resource type="PackedScene" uid="uid://dkrkuhhgrrht3" path="res://scenes/objects/spikes_down.tscn" id="3_2bhk4"]
+[ext_resource type="PackedScene" uid="uid://b68ooc1shlify" path="res://scenes/objects/spikes_left.tscn" id="4_i14ux"]
+[ext_resource type="PackedScene" uid="uid://c7cinwnxdblun" path="res://scenes/objects/spikes_right.tscn" id="5_ee2ow"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4mibb"]
 texture = ExtResource("1_fijjp")
@@ -518,8 +520,11 @@ texture = ExtResource("1_fijjp")
 7:5/0/terrains_peering_bit/top_side = 0
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_n20s5"]
+resource_name = "Spikes"
 scenes/1/scene = ExtResource("2_p0qdt")
-scenes/2/scene = ExtResource("3_arjpf")
+scenes/3/scene = ExtResource("3_2bhk4")
+scenes/4/scene = ExtResource("4_i14ux")
+scenes/5/scene = ExtResource("5_ee2ow")
 
 [resource]
 physics_layer_0/collision_layer = 1

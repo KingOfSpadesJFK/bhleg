@@ -2,7 +2,8 @@ extends Node2D
 
 var _segment = SegmentShape2D.new()
 @onready var _spring_joint: DampedSpringJoint2D = $DampedSpringJoint2D
-@onready var _line: Line2D = $Line2D
+@onready var _line: Line2D = $Rope
+@onready var _line_outline: Line2D = $RopeOutline
 
 @export var length: float = 50.0 : 
 	get:
@@ -44,15 +45,18 @@ func _ready():
 	_spring_joint.node_b = physics_object.get_path()
 	_spring_joint.length = length
 
-	if _line:
+	if _line && _line_outline:
 		var verts: Array[Vector2] = [$Anchor.position, to_local(physics_object.global_position)]
 		_line.points = PackedVector2Array(verts)
+		_line_outline.points = PackedVector2Array(verts)
 
 
 func _process(_delta):
-	if _line:
+	if _line && _line_outline:
 		var verts: Array[Vector2] = [$Anchor.position, to_local(physics_object.global_position)]
 		_line.points = PackedVector2Array(verts)
+		_line_outline.points = PackedVector2Array(verts)
+		
 
 
 func _phyisics_process(_delta):
@@ -68,4 +72,6 @@ func _on_hit_box_hit():
 		_spring_joint = null
 		_line.queue_free()
 		_line = null
+		_line_outline.queue_free()
+		_line_outline = null
 		$HitBox.queue_free()

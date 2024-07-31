@@ -83,6 +83,7 @@ enum FlashType {
 func _ready():
 	if _anim_tree:
 		_anim_tree.active = true
+	_fade_overlay_colors()
 
 
 func _process(_delta):

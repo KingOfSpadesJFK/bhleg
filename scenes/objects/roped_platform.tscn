@@ -12,6 +12,8 @@ b = Vector2(0, 51)
 
 [node name="RopedPlatform" type="Node2D"]
 script = ExtResource("1_keimk")
+stiffness = 20.0
+damping = 1.0
 
 [node name="DampedSpringJoint2D" type="DampedSpringJoint2D" parent="."]
 node_a = NodePath("../Anchor")
@@ -36,7 +38,12 @@ script = ExtResource("3_m8sfv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 shape = SubResource("SegmentShape2D_ncm7c")
 
-[node name="Line2D" type="Line2D" parent="."]
+[node name="RopeOutline" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 3.0
+antialiased = true
+
+[node name="Rope" type="Line2D" parent="."]
 points = PackedVector2Array(0, 0, 0, 0)
 width = 1.0
 default_color = Color(0, 0, 0, 1)

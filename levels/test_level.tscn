@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bb8l5k2fjvhes"]
+[gd_scene load_steps=12 format=3 uid="uid://bb8l5k2fjvhes"]
 
 [ext_resource type="PackedScene" uid="uid://cy4oa4aji2qxu" path="res://scenes/player.tscn" id="2_butpl"]
 [ext_resource type="Script" path="res://scripts/light_body.gd" id="3_465bv"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://csp30sbkxkp0e" path="res://scenes/objects/light_box.tscn" id="5_i8ju4"]
 [ext_resource type="Script" path="res://scripts/red_light_body.gd" id="7_pfnnh"]
 [ext_resource type="PackedScene" uid="uid://wml1pvsy7kfx" path="res://scenes/objects/roped_platform.tscn" id="8_xxqvf"]
-[ext_resource type="Texture2D" uid="uid://ctixb2big5re5" path="res://assets/tileset.png" id="9_ie4nf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j7rlh"]
 radius = 42.0
@@ -18,66 +17,7 @@ radius = 120.15
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n2fd4"]
 size = Vector2(62, 15)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rvpot"]
-texture = ExtResource("9_ie4nf")
-0:0/0 = 0
-1:0/0 = 0
-2:0/0 = 0
-3:0/0 = 0
-4:0/0 = 0
-5:0/0 = 0
-6:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-4:1/0 = 0
-5:1/0 = 0
-6:1/0 = 0
-0:2/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-5:2/0 = 0
-6:2/0 = 0
-0:3/0 = 0
-1:3/0 = 0
-2:3/0 = 0
-3:3/0 = 0
-5:3/0 = 0
-6:3/0 = 0
-0:4/0 = 0
-1:4/0 = 0
-2:4/0 = 0
-3:4/0 = 0
-9:4/0 = 0
-0:5/0 = 0
-1:5/0 = 0
-2:5/0 = 0
-3:5/0 = 0
-4:5/0 = 0
-5:5/0 = 0
-6:5/0 = 0
-7:5/0 = 0
-8:5/0 = 0
-9:5/0 = 0
-0:6/0 = 0
-1:6/0 = 0
-2:6/0 = 0
-3:6/0 = 0
-4:6/0 = 0
-5:6/0 = 0
-6:6/0 = 0
-0:7/0 = 0
-1:7/0 = 0
-2:7/0 = 0
-3:7/0 = 0
-4:7/0 = 0
-5:7/0 = 0
-6:7/0 = 0
-
 [sub_resource type="TileSet" id="TileSet_s41ii"]
-sources/0 = SubResource("TileSetAtlasSource_rvpot")
 
 [node name="TestLevel" type="Node2D"]
 metadata/_edit_vertical_guides_ = [-204.0]
