@@ -144,4 +144,7 @@ func _on_retry_pressed():
 
 
 func _on_quit_pressed():
-	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	GlobalMusicPlayer.get_current_track().fade_finished.connect(GlobalMusicPlayer.unload_track)
+	Bhleg.change_scene("title")
+	GlobalMusicPlayer.get_current_track().fade_out()
+	get_tree().paused = false
