@@ -8,3 +8,9 @@ export_presets.cfg
 
 # Ignores
 .ignore
+
+# Build folder
+.build/
+
+# Screenshots as imports
+screenshots/*.import

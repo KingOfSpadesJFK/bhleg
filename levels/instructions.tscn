@@ -64,9 +64,9 @@ horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="BoxContainer"]
 layout_mode = 2
-text = "WASD: Move
-Left Mouse Click: Flash
-Tab: Switch Light Colors"
+text = "WASD / Dpad: Move
+Left Mouse Click / RT: Flash
+Tab / Bumpers: Switch Light Colors"
 
 [node name="Label3" type="Label" parent="BoxContainer"]
 layout_mode = 2
@@ -79,6 +79,6 @@ text = "   Flashing light uses light cells.
 
 [node name="Label4" type="Label" parent="BoxContainer"]
 layout_mode = 2
-text = "Press Esc to pause anytime"
+text = "Press Esc/Start to pause anytime"
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

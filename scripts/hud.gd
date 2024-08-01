@@ -41,7 +41,7 @@ func _ready():
 	
 	$Pause/Margin.position += Vector2(0,512)
 	$Pause/Margin/FlashLabel.text = "Press F1 to disable flash effect " + ("(enabled)"  if !Bhleg.disable_flash_effect else "(disabled)")
-
+	
 
 func _on_player_flash(_red: int, _cyan: int):
 	var change_mod: Callable = func(node: CanvasItem, color: Color, enough: bool):
@@ -114,6 +114,8 @@ func _pause_unpause():
 	var end_pause: Callable = func():
 		if !_paused:
 			$Pause.visible = false
+		else:
+			$Pause/Margin/BoxContainer/Resume.grab_focus()
 		_pause_tween.kill()
 		
 	$Pause.visible = true
